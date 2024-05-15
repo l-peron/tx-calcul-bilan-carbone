@@ -1,0 +1,13 @@
+{
+    "operateur": "+",
+    "var1": {
+        "operateur": "*",
+        "var1": "typeTransport",
+        "var2": "nbPersonnes"
+    },
+    "var2": {
+        "operateur": "*",
+        "var1": "typeTransport",
+        "var2": "nbPersonnes"
+    }
+}
