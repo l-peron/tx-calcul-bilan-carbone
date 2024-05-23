@@ -1,19 +1,4 @@
 {
-    "bilan": {
-        "id_bilan": 1,
-        "type_bilan": "event",
-        "auteur": "Raphaël",
-        "asso": "BDE",
-        "pole_asso": "RSE",
-        "date_creation": "timestamp",
-        "evenement": {
-            "id_event": 1,
-            "intitule_event": "Projection film",
-            "date_debut": "timestamp",
-            "date_fin": "timestamp",
-            "description": ""
-        }
-    },
     "id_enregistrement": 1,
     "auteur": "Ricco",
     "date_modification": "timestamp",
@@ -22,34 +7,26 @@
             {
                 "id_formulaire": 1,
                 "intitule_formulaire": "Transport de membres associatifs",
-                "date_creation": "timestamps",
+                "date_modification": "timestamps",
                 "secteur": "transport",
-                "formule" : "json",
-                "est_publie": true,
+                "formule": null,
                 "description": "Formulaire à sélectionner si l'événement a nécessité le transport des membres associatifs.",
                 "questions": [
                     {
                         "id_question": 1,
                         "intitule_question": "Quel mode de transport a été utilisé ?",
                         "nom_variable": "typeTransport",
-                        "date_creation": "timestamp",
+                        "date_modification": "timestamp",
                         "type_reponse": "radio_button",
-                        "description"
+                        "reponse_utilisateur": "float | uuid (donnee) |  [ {uuid:, 2esaisie:}, {uuid:, 2esaisie:}, {uuid:, 2esaisie:}]",
+                        "description": null,
                         "choix_possibles": [
                             {
-                                "id_reponse"
-                                "intitule_reponse"
-                                "description"
-                                "donnee_associee" :
-                                    [
-                                        {
-                                            "id_donnee"
-                                            "valeur"
-                                            "unite"
-                                            "metrique"
-                                            "source"
-                                        }
-                                    ]
+                                "id_reponse""intitule_reponse""description""donnee_associee": [
+                                    {
+                                        "id_donnee""valeur""unite""metrique""source"
+                                    }
+                                ]
                             }
                         ]
                     }
