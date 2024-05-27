@@ -22,9 +22,16 @@
                         "description": null,
                         "choix_possibles": [
                             {
-                                "id_reponse""intitule_reponse""description""donnee_associee": [
+                                "id_reponse": 1,
+                                "intitule_reponse": "Avion",
+                                "description": "Description BDE",
+                                "donnee_associee": [
                                     {
-                                        "id_donnee""valeur""unite""metrique""source"
+                                        "id_donnee": 1,
+                                        "valeur": 2.1,
+                                        "unite": "CO2eq/km/p",
+                                        "metrique": "CO2",
+                                        "source": "ADEME"
                                     }
                                 ]
                             }
