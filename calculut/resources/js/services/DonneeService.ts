@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export default interface Donnee {
-    id: string,
-    intitule: string,
-    description: string,
-    valeur: string,
-    unite: string,
+export class Donnee {
+    id: string
+    intitule: string
+    description: string
+    valeur: string
+    unite: string
     metrique: Metrique
 }
 

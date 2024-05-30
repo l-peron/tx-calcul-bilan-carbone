@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "./pages/HomeView.vue";
 import TestView from "./pages/TestView.vue";
 import ListDonneesView from "./pages/donnees/ListDonneesView.vue";
-import ListBilansView from "./pages/bilans/admin/ListBilansView.vue";
+import ListBilansView from "./pages/bilans/admin/ListBilansAdminView.vue";
+import CreateBilanUtilisateurView from "./pages/bilans/utilisateur/CreateBilanUtilisateurView.vue";
 
 const routes = [
     {
@@ -12,6 +13,10 @@ const routes = [
     {
         path: "/test",
         component: TestView,
+    },
+    {
+        path: "/asso/bilans/create",
+        component: CreateBilanUtilisateurView
     },
     {
         path: "/admin/donnees",

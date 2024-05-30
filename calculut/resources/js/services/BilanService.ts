@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export default interface Bilan {
-    intitule: string,
-    type: BilanType,
-    auteur: string,
-    asso: string,
-    pole_asso: string,
+export class Bilan {
+    intitule: string
+    type: BilanType
+    auteur: string
+    asso: string
+    pole_asso: string
     enregistrement: Object
 }
 

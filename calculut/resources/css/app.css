@@ -6,18 +6,6 @@
     height: 100%;
 }
 
-.p-button-primary {
-    @apply bg-emerald-800;
-    @apply border-0;
-}
-
-
-.p-button-secondary {
-    @apply bg-red-400;
-}
-
-
-
 /*
     Issue rencontré avec le menu, lien github: https://github.com/primefaces/primevue/issues/5250
  */

@@ -21,16 +21,8 @@
 
     // Liste des données
     const bilans = ref();
-    const poles_search = ref([
-        { name: 'PTE', code: 'PTE' },
-        { name: 'PAE', code: 'PAE' },
-        { name: 'PSEC', code: 'PSEC' },
-        { name: 'PVDC', code: 'PVDC' },
-        { name: 'Tous les pôles', code: null }
-    ]);
     const filters = ref({
         'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-        'pole_asso': {value: null, matchMode: FilterMatchMode.EQUALS}
     });
 
     async function recupererBilans() {
@@ -55,7 +47,6 @@
                             <InputIcon class="pi pi-search"> </InputIcon>
                             <InputText v-model="filters['global'].value" placeholder="Rechercher un bilan..." id="search_donnee"/>
                         </IconField>
-                        <Dropdown v-model="filters['pole_asso'].value" :options="poles_search" optionLabel="name" optionValue="code" placeholder="Sélectionner un pôle" class="w-full md:w-14rem" />
                     </div>
                 </div>
             </template>
