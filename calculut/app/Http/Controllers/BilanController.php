@@ -14,7 +14,7 @@ class BilanController extends Controller
      */
     public function index(): Collection
     {
-        return Bilan::all();
+        return Bilan::with(['enregistrementFinalises', 'evenement'])->get();
     }
 
     /**

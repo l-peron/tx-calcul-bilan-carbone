@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "./pages/HomeView.vue";
 import TestView from "./pages/TestView.vue";
 import ListDonneesView from "./pages/donnees/ListDonneesView.vue";
+import ListBilansView from "./pages/bilans/admin/ListBilansView.vue";
 
 const routes = [
     {
@@ -15,6 +16,10 @@ const routes = [
     {
         path: "/admin/donnees",
         component: ListDonneesView
+    },
+    {
+        path: "/admin/bilans",
+        component: ListBilansView
     }
 ];
 

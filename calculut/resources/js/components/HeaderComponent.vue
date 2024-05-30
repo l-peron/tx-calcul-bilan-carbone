@@ -45,7 +45,7 @@ const items = ref([
         label: 'Bilans',
         icon: 'pi pi-link',
         command: () => {
-            router.push('/test');
+            router.push('/admin/bilans');
         }
     },
     {
