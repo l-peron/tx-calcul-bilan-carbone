@@ -15,7 +15,7 @@ const routes = [
         component: TestView,
     },
     {
-        path: "/asso/bilans/create",
+        path: "/assos/bilans/edit/:id",
         component: CreateBilanUtilisateurView
     },
     {

@@ -55,6 +55,8 @@ class Bilan extends Model
 
     protected $fillable = ["intitule", "type", "auteur", "asso", "pole_asso", "enregistrement"];
 
+    protected $with = ['evenement'];
+
     protected function casts(): array
     {
         return [

@@ -21,4 +21,17 @@ export class BilanService {
         const bilans = await axios.get(this.endpoint);
         return Promise.resolve(bilans.data);
     }
+
+    public async getBilan(id): Promise<Bilan[]> {
+        const bilan = await axios.get(this.endpoint + '/' + id)
+        return Promise.resolve(bilan.data)
+    }
+
+    public async updateBilan(id, titre, enregistrement): Promise<boolean> {
+        const isUpdated = await axios.put(this.endpoint + '/' + id, {
+            titre,
+            enregistrement
+        })
+        return Promise.resolve(true)
+    }
 }
