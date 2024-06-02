@@ -29,7 +29,7 @@ export class BilanService {
 
     public async updateBilan(id, titre, enregistrement): Promise<boolean> {
         const isUpdated = await axios.put(this.endpoint + '/' + id, {
-            titre,
+            intitule: titre,
             enregistrement
         })
         return Promise.resolve(true)

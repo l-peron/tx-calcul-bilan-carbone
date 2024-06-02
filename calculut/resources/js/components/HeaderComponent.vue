@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Menubar :model="items" class="bg-green-50 py-4 border-b border-b-emerald-800 rounded-none">
+        <Menubar :model="items" class="bg-green-50 border-b border-b-emerald-800 rounded-none">
             <template #start>
                 <h1 class="font-bold text-2xl text-emerald-800 mx-4">Calcul'UT</h1>
             </template>

@@ -26,10 +26,10 @@
     }
 
     #root {
-        top: 98px;
+        top: 82px;
         position: fixed;
         overflow: scroll;;
-        height: calc(100% - 98px);
+        height: calc(100% - 82px);
         width: 100%;
     }
 

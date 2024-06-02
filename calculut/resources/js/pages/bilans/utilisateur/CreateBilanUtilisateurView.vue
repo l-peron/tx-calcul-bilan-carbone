@@ -10,10 +10,13 @@
     import QuestionUtilisateurCardComponent from "../../../components/bilans/utilisateur/FormulaireCardComponent.vue";
     import {useRoute} from "vue-router";
     import {BilanService} from "../../../services/BilanService.ts";
+    import {useToast} from "primevue/usetoast";
 
     const formulaireService = new FormulaireService();
     const bilanService = new BilanService();
-    const routes = useRoute()
+    const routes = useRoute();
+    const toast = useToast();
+
 
     const formulaires = ref();
     const selectedFormulaires = ref([]);
@@ -32,15 +35,18 @@
         });
     }
 
-    async function selectionerFormulaire(id) {
-        selectedFormulaires.value.push(id);
-    }
-
     onMounted(async() => {
         await recupererFormulaires();
 
         await bilanService.getBilan(routes.params.id).then(bilan => {
             titre_bilan.value = bilan.intitule
+
+            if(bilan.enregistrement) {
+                for(const formulaire of bilan.enregistrement.formulaires) {
+                    answeredFormulaires.value[formulaire.id] = formulaire.reponses
+                    selectedFormulaires.value.push(formulaire)
+                }
+            }
         })
 
         for(const formulaire of formulaires.value) {
@@ -49,35 +55,42 @@
         }
     });
 
+    async function selectionerFormulaire(id) {
+        await formulaireService.getFormulaire(id).then(formulaire => {
+            selectedFormulaires.value.push(formulaire)
+        });
+    }
+
     function onNodeSelect(node) {
-        if(node.type === 'formulaire' && !selectedFormulaires.value.some(f => f.id === node.key)) {
+        if(node.type === 'formulaire') {
             selectionerFormulaire(node.key)
         }
     }
 
     function removeFormulaire(id) {
-        selectedFormulaires.value = selectedFormulaires.value.filter(i => i !== id)
+        selectedFormulaires.value = selectedFormulaires.value.filter(f => f.id !== id)
         delete answeredFormulaires.value[id]
     }
 
     function saveFormulaire(id, reponses) {
+        console.log(reponses)
         answeredFormulaires.value[id] = reponses
     }
 
-    function saveBilan() {
+    async function saveBilan() {
         const formulairesEnregistrement = map(answeredFormulaires.value, (questions, id) => {
-            const formulaire = formulaires.value.find(f => f.id === id)
-            return {
-                formulaire,
-                questions
-            }
+            const formulaire = selectedFormulaires.value.find(f => f.id === id)
+            formulaire.reponses = questions
+            return formulaire;
         })
 
-        bilanService.updateBilan(routes.params.id, titre_bilan.value, {
+        await bilanService.updateBilan(routes.params.id, titre_bilan.value, {
             date: new Date(),
             auteur: 'auteur',
             formulaires: formulairesEnregistrement
-        })
+        }).then(() => {
+            toast.add({ severity: 'success', summary: 'Bilan sauvegardé !', detail: 'Le bilan a bien été sauvegardé', life: 5000 });
+        });
     }
 
 </script>
@@ -127,9 +140,8 @@
                         </div>
                     </template>
                 </Card>
-                <div v-for="formulaire in formulaires">
-                    <!-- Horrible de charger tous les formulaires d'un coup, mais la création dynamique de formulaire est pas trivial avec le lifecycle de Vue, à changer si possible -->
-                    <QuestionUtilisateurCardComponent :formulaire="formulaire" @removeFormulaire="removeFormulaire" @saveFormulaire="saveFormulaire" v-if="selectedFormulaires.some(i => i === formulaire.id)"/>
+                <div v-for="formulaire in selectedFormulaires">
+                    <QuestionUtilisateurCardComponent :key="formulaire.id" :formulaire="formulaire" @removeFormulaire="removeFormulaire" @saveFormulaire="saveFormulaire"/>
                 </div>
             </div>
         </div>

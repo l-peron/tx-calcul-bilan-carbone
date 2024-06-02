@@ -14,7 +14,7 @@ class FormulaireController extends Controller
      */
     public function index(): Collection
     {
-        return Formulaire::with('questions')->get();
+        return Formulaire::all();
     }
 
     /**

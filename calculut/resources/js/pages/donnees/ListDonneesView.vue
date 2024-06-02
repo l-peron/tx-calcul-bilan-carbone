@@ -55,7 +55,6 @@
     }
 
     function confirmDeleteDonnee(donnee) {
-        console.log(donnee);
         confirm.require({
             message: 'Es-tu sûr de vouloir supprimer la donnée ? (Pense aux questions associées !)',
             header: 'Supprimer la donnée',

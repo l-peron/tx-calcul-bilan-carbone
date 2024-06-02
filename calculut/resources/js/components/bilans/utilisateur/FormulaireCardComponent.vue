@@ -11,7 +11,11 @@
     function generateRef() {
         const ref = []
         for(const question of props.formulaire.questions) {
-            ref.push({question, reponse: '0'})
+            let reponse = undefined
+            if(props.formulaire.reponses)
+                reponse = props.formulaire.reponses.find(r => r.question.id === question.id)?.reponse
+
+            ref.push({question, reponse: reponse ? reponse : '0'})
         }
         return ref;
     }
