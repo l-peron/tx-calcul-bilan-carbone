@@ -8,13 +8,16 @@
     import { map } from "lodash";
     import Button from "primevue/button";
     import QuestionUtilisateurCardComponent from "../../../components/bilans/utilisateur/FormulaireCardComponent.vue";
-    import {useRoute} from "vue-router";
+    import {useRoute, useRouter} from "vue-router";
     import {BilanService} from "../../../services/BilanService.ts";
     import {useToast} from "primevue/usetoast";
+    import {useConfirm} from "primevue/useconfirm";
 
     const formulaireService = new FormulaireService();
     const bilanService = new BilanService();
     const routes = useRoute();
+    const router = useRouter();
+    const confirm = useConfirm();
     const toast = useToast();
 
 
@@ -93,6 +96,21 @@
         });
     }
 
+    function confirmDeleteBilan() {
+        confirm.require({
+            message: 'Es-tu sûr de vouloir supprimer le bilan ?',
+            header: 'Supprimer le bilan',
+            icon: 'pi pi-exclamation-triangle',
+            rejectLabel: 'Annuler',
+            acceptLabel: 'Supprimer',
+            accept: async function() {
+                await bilanService.deleteBilan(routes.params.id);
+                toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été supprimé', life: 3000 });
+                await router.push(`/assos/${routes.params.asso}/bilans`)
+            },
+        });
+    }
+
 </script>
 
 <template>
@@ -119,7 +137,7 @@
                             <div class="flex flex-row gap-2">
                                 <Button label="Sauvegarder" severity="primary" @click="saveBilan"/>
                                 <Button label="Finaliser" severity="secondary"/>
-                                <Button label="Supprimer" severity="danger" outlined />
+                                <Button label="Supprimer" severity="danger" outlined @click="confirmDeleteBilan" />
                             </div>
                         </div>
                     </template>

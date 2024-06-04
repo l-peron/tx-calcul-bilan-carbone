@@ -5,7 +5,6 @@
     import InputText from 'primevue/inputtext';
     import IconField from "primevue/iconfield";
     import InputIcon from "primevue/inputicon";
-    import Dropdown from "primevue/dropdown";
     import { useToast } from "primevue/usetoast";
     import { ref, onMounted } from 'vue';
     import {FilterMatchMode} from "primevue/api";
@@ -21,16 +20,9 @@
 
     // Liste des données
     const bilans = ref();
-    const poles_search = ref([
-        { name: 'PTE', code: 'PTE' },
-        { name: 'PAE', code: 'PAE' },
-        { name: 'PSEC', code: 'PSEC' },
-        { name: 'PVDC', code: 'PVDC' },
-        { name: 'Tous les pôles', code: null }
-    ]);
+
     const filters = ref({
         'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-        'pole_asso': {value: null, matchMode: FilterMatchMode.EQUALS}
     });
 
     async function recupererBilans() {
@@ -42,6 +34,21 @@
     onMounted(async() => {
         await recupererBilans();
     });
+
+    function confirmDeleteBilan(bilanId) {
+        confirm.require({
+            message: 'Es-tu sûr de vouloir supprimer le bilan ?',
+            header: 'Supprimer le bilan',
+            icon: 'pi pi-exclamation-triangle',
+            rejectLabel: 'Annuler',
+            acceptLabel: 'Supprimer',
+            accept: async function() {
+                await bilanService.deleteBilan(bilanId);
+                await recupererBilans();
+                toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été supprimé', life: 3000 });
+            },
+        });
+    }
 </script>
 
 <template class="h-full">
@@ -55,14 +62,13 @@
                             <InputIcon class="pi pi-search"> </InputIcon>
                             <InputText v-model="filters['global'].value" placeholder="Rechercher un bilan..." id="search_donnee"/>
                         </IconField>
-                        <Dropdown v-model="filters['pole_asso'].value" :options="poles_search" optionLabel="name" optionValue="code" placeholder="Sélectionner un pôle" class="w-full md:w-14rem" />
                     </div>
                 </div>
             </template>
             <Column field="intitule" header="Nom" />
             <Column field="type" header="Type"></Column>
             <Column field="asso" header="Association"></Column>
-            <Column field="pole_asso" header="Pôle" filter-field="pole_asso"></Column>
+            <Column field="auteur" header="Auteur"></Column>
             <Column header="État">
                 <template #body="{ data }">
                     <span v-if="data.enregistrement_finalises.length">Finalisé</span>
@@ -70,14 +76,14 @@
                 </template>
             </Column>
             <Column style="min-width:8rem" header="Exporter">
-                <template #body="slotProps">
-                    <Button icon="pi pi-download" outlined/>
+                <template #body="{ data }">
+                    <Button icon="pi pi-download" outlined :disabled="!data.enregistrement_finalises.length"/>
                 </template>
             </Column>
             <Column style="min-width:8rem" header="Action">
-                <template #body="slotProps">
+                <template #body="{ data }">
                     <Button icon="pi pi-pencil" outlined rounded class="mr-2"/>
-                    <Button icon="pi pi-trash" outlined rounded severity="danger"/>
+                    <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteBilan(data.id)"/>
                 </template>
             </Column>
         </DataTable>

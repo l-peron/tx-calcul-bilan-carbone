@@ -12,17 +12,29 @@ class BilanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Collection
+    public function index(Request $request): Collection
     {
-        return Bilan::with(['enregistrementFinalises', 'evenement'])->get();
+        $asso = $request->query('asso');
+        if($asso == null) return Bilan::with(['enregistrementFinalises', 'evenement'])->get();
+        else return Bilan::with(['enregistrementFinalises', 'evenement'])->where('asso', $asso)->get();
+    }
+
+    public function indexByAsso(string $asso): Collection
+    {
+        return Bilan::with('evenement')->where('asso', $asso)->get();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): Bilan
+    public function store(Request $request): ?Bilan
     {
-        return Bilan::create($request->all());
+        $userFullName = $request->session()->get("fullName");
+
+        $bilan = $request->all();
+        $bilan['auteur'] = $userFullName;
+
+        return Bilan::create($bilan);
     }
 
     /**
