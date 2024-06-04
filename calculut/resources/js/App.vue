@@ -5,7 +5,7 @@
         <ConfirmDialog></ConfirmDialog>
         <DynamicDialog />
         <router-view v-slot="{ Component, route }">
-            <div :key="route.name">
+            <div :key="route.name" class="h-full">
                 <Component :is="Component" />
             </div>
         </router-view>
@@ -26,10 +26,10 @@
     }
 
     #root {
-        top: 98px;
+        top: 82px;
         position: fixed;
         overflow: scroll;;
-        height: calc(100% - 98px);
+        height: calc(100% - 82px);
         width: 100%;
     }
 
