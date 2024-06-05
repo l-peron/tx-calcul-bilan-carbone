@@ -2,7 +2,7 @@
     <HeaderComponent id="header"></HeaderComponent>
     <div id="root">
         <Toast />
-        <ConfirmDialog></ConfirmDialog>
+        <ConfirmDialog />
         <DynamicDialog />
         <router-view v-slot="{ Component, route }">
             <div :key="route.name" class="h-full">

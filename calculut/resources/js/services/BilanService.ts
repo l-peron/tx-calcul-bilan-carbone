@@ -1,5 +1,11 @@
 import axios from "axios";
 
+class CreateBilanDTO {
+    intitule: string;
+    debut: Date;
+    fin: Date;
+}
+
 export class Bilan {
     intitule: string
     type: BilanType
@@ -7,11 +13,15 @@ export class Bilan {
     asso: string
     pole_asso: string
     enregistrement: Object
+    formulaires: Object[]
 }
 
 enum BilanType {
     EVENT= 'event'
 }
+
+
+
 export class BilanService {
     private endpoint = "/api/bilans";
 
@@ -32,17 +42,21 @@ export class BilanService {
         return Promise.resolve(bilan.data)
     }
 
-    public async updateBilan(id: string, titre: string, enregistrement: Object): Promise<boolean> {
+    public async updateBilan(id: string, updateBilanDTO: CreateBilanDTO, enregistrement: Object): Promise<boolean> {
         const isUpdated = await axios.put(this.endpoint + '/' + id, {
-            intitule: titre,
+            intitule: updateBilanDTO.intitule,
+            debut: updateBilanDTO.debut,
+            fin: updateBilanDTO.fin,
             enregistrement
         })
         return Promise.resolve(true)
     }
 
-    public async createBilan(intitule: string, asso: string): Promise<Bilan> {
+    public async createBilan(createBilanDTO: CreateBilanDTO, asso: string): Promise<Bilan> {
         const bilan = await axios.post(this.endpoint, {
-            intitule,
+            intitule: createBilanDTO.intitule,
+            debut: createBilanDTO.debut,
+            fin: createBilanDTO.fin,
             asso,
             type: 'event'
         });
@@ -51,6 +65,11 @@ export class BilanService {
 
     public async deleteBilan(id: string): Promise<void> {
         await axios.delete(this.endpoint + '/' + id);
+        return Promise.resolve();
+    }
+
+    public async duplicateBilan(id: string): Promise<void> {
+        await axios.post(`${this.endpoint}/${id}/duplicate`)
         return Promise.resolve();
     }
 }

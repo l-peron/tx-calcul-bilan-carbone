@@ -12,6 +12,8 @@
     import {BilanService} from "../../../services/BilanService.ts";
     import {useToast} from "primevue/usetoast";
     import {useConfirm} from "primevue/useconfirm";
+    import FinaliserBilanModalView from "./FinaliserBilanModalView.vue";
+    import {useDialog} from "primevue/usedialog";
 
     const formulaireService = new FormulaireService();
     const bilanService = new BilanService();
@@ -19,11 +21,11 @@
     const router = useRouter();
     const confirm = useConfirm();
     const toast = useToast();
+    const dialog = useDialog();
 
 
     const formulaires = ref();
-    const selectedFormulaires = ref([]);
-    const answeredFormulaires = ref({});
+    const selectedFormulaires = ref({});
     const nodes = ref(map(TypeFormulaire, (label, key) => {
         return { key, label, children: [] };
     }));
@@ -43,15 +45,17 @@
 
         await bilanService.getBilan(routes.params.id).then(bilan => {
             titre_bilan.value = bilan.intitule
+            debut_event.value = new Date(bilan.evenement.debut * 1000)
+            fin_event.value = new Date(bilan.evenement.fin * 1000)
 
-            if(bilan.enregistrement) {
+            if(bilan.enregistrement?.formulaires?.length) {
                 for(const formulaire of bilan.enregistrement.formulaires) {
-                    answeredFormulaires.value[formulaire.id] = formulaire.reponses
-                    selectedFormulaires.value.push(formulaire)
+                    selectedFormulaires.value[formulaire.id] = formulaire;
                 }
             }
         })
 
+        // Génération des formulaires remplissables à gauche
         for(const formulaire of formulaires.value) {
             const node_index = nodes.value.findIndex(n => n.key === formulaire.secteur)
             nodes.value[node_index].children.push({ key: formulaire.id, label: formulaire.intitule, type: 'formulaire' })
@@ -60,7 +64,7 @@
 
     async function selectionerFormulaire(id) {
         await formulaireService.getFormulaire(id).then(formulaire => {
-            selectedFormulaires.value.push(formulaire)
+            selectedFormulaires.value[formulaire.id] = formulaire;
         });
     }
 
@@ -71,27 +75,27 @@
     }
 
     function removeFormulaire(id) {
-        selectedFormulaires.value = selectedFormulaires.value.filter(f => f.id !== id)
-        delete answeredFormulaires.value[id]
+        delete selectedFormulaires.value[id];
     }
 
     function saveFormulaire(id, reponses) {
-        console.log(reponses)
-        answeredFormulaires.value[id] = reponses
+        selectedFormulaires.value[id].questions = reponses
+    }
+
+    function getEnregistrement() {
+        return {
+            date: new Date(),
+            auteur: 'auteur',
+            formulaires: selectedFormulaires.value
+        };
     }
 
     async function saveBilan() {
-        const formulairesEnregistrement = map(answeredFormulaires.value, (questions, id) => {
-            const formulaire = selectedFormulaires.value.find(f => f.id === id)
-            formulaire.reponses = questions
-            return formulaire;
-        })
-
-        await bilanService.updateBilan(routes.params.id, titre_bilan.value, {
-            date: new Date(),
-            auteur: 'auteur',
-            formulaires: formulairesEnregistrement
-        }).then(() => {
+        await bilanService.updateBilan(routes.params.id, {
+            intitule: titre_bilan.value,
+            debut: debut_event.value,
+            fin: debut_event.value
+        }, getEnregistrement()).then(() => {
             toast.add({ severity: 'success', summary: 'Bilan sauvegardé !', detail: 'Le bilan a bien été sauvegardé', life: 5000 });
         });
     }
@@ -107,6 +111,16 @@
                 await bilanService.deleteBilan(routes.params.id);
                 toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été supprimé', life: 3000 });
                 await router.push(`/assos/${routes.params.asso}/bilans`)
+            },
+        });
+    }
+
+    function confirmFinaliserBilan() {
+        dialog.open(FinaliserBilanModalView, {
+            props: { header: 'Finaliser le bilan', modal: true},
+            data: {
+                bilanId: routes.params.id,
+                enregistrement: getEnregistrement()
             },
         });
     }
@@ -128,7 +142,7 @@
                 </Tree>
             </div>
         </div>
-        <div class="p-6 overflow-y-scroll bg-stone-100">
+        <div class="p-6 overflow-y-scroll bg-stone-100 w-full">
             <div class="flex flex-col gap-4">
                 <Card id="bilan_creation_form">
                     <template #title>
@@ -136,7 +150,7 @@
                             <h1 class="text-xl font-bold my-2">Création d'un Bilan</h1>
                             <div class="flex flex-row gap-2">
                                 <Button label="Sauvegarder" severity="primary" @click="saveBilan"/>
-                                <Button label="Finaliser" severity="secondary"/>
+                                <Button label="Finaliser" severity="secondary" @click="confirmFinaliserBilan"/>
                                 <Button label="Supprimer" severity="danger" outlined @click="confirmDeleteBilan" />
                             </div>
                         </div>
@@ -149,11 +163,11 @@
                             </div>
                             <div class="flex flex-col">
                                 <label for="dateDebut" class="font-bold block mb-2">Date de début</label>
-                                <Calendar v-model="debut_event" showIcon iconDisplay="input" inputId="dateDebut" />
+                                <Calendar v-model="debut_event" showIcon iconDisplay="input" inputId="dateDebut" dateFormat="dd/mm/yy"/>
                             </div>
                             <div class="flex flex-col">
                                 <label for="dateFin" class="font-bold block mb-2">Date de fin</label>
-                                <Calendar v-model="fin_event" showIcon iconDisplay="input" inputId="dateFin" />
+                                <Calendar v-model="fin_event" showIcon iconDisplay="input" inputId="dateFin" dateFormat="dd/mm/yy"/>
                             </div>
                         </div>
                     </template>

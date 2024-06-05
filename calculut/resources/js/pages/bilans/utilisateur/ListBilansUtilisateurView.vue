@@ -47,6 +47,21 @@
         await recupererBilans();
     });
 
+    function confirmDuplicateBilan(bilanId) {
+        confirm.require({
+            message: 'Es-tu sûr de vouloir duppliquer le bilan ?',
+            header: 'Dupliquer le bilan',
+            icon: 'pi pi-exclamation-triangle',
+            rejectLabel: 'Annuler',
+            acceptLabel: 'Dupliquer',
+            accept: async function() {
+                await bilanService.duplicateBilan(bilanId);
+                await recupererBilans();
+                toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été dupliqué', life: 3000 });
+            },
+        });
+    }
+
     function confirmDeleteBilan(bilanId) {
         confirm.require({
             message: 'Es-tu sûr de vouloir supprimer le bilan ?',
@@ -60,6 +75,11 @@
                 toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été supprimé', life: 3000 });
             },
         });
+    }
+
+    function parseDate(timestamp) {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleString("fr").split(" ")[0]
     }
 </script>
 
@@ -79,7 +99,16 @@
                 </div>
             </template>
             <Column field="intitule" header="Nom" />
-            <Column field="type" header="Type"></Column>
+            <Column header="Début">
+                <template #body="{ data }">
+                    <span>{{ parseDate(data.evenement.debut) }}</span>
+                </template>
+            </Column>
+            <Column header="Fin">
+                <template #body="{ data }">
+                   <span>{{ parseDate(data.evenement.fin) }}</span>
+                </template>
+            </Column>
             <Column header="État">
                 <template #body="{ data }">
                     <span v-if="data.enregistrement_finalises.length">Finalisé</span>
@@ -93,10 +122,14 @@
             </Column>
             <Column style="min-width:8rem" header="Action">
                 <template #body="{ data }">
-                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/edit'" target="_blank" rel="noopener">
-                        <Button icon="pi pi-pencil" outlined rounded class="mr-2"/>
+                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/finalises'" target="_blank" rel="noopener" v-if="data.enregistrement_finalises.length">
+                        <Button label="Consulter" icon="pi pi-eye" outlined class="mr-2" severity="secondary"/>
                     </router-link>
-                    <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteBilan(data.id)"/>
+                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/edit'" target="_blank" rel="noopener">
+                        <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2"/>
+                    </router-link>
+                    <Button label="Dupliquer" icon="pi pi-clone" outlined severity="contrast" class="mr-2" @click="confirmDuplicateBilan(data.id)"/>
+                    <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteBilan(data.id)"/>
                 </template>
             </Column>
         </DataTable>

@@ -18,6 +18,7 @@ export class Question {
     variable: string
     type: "unique" | "saisie"
     donnees: Donnee
+    reponse?: number
 }
 
 export enum TypeFormulaire {

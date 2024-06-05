@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DTOs\EnregistrementJSON;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property string $auteur
- * @property array $enregistrement
+ * @property EnregistrementJSON $enregistrement
  * @property string $commentaire
  * @property string $bilan_id
  * @property-read \App\Models\Bilan $bilan
@@ -48,8 +49,8 @@ class EnregistrementFinalise extends Model
     {
         return [
           'auteur' => 'string',
-            'enregistrement' => 'array',
             'commentaire' => 'string',
+            'enregistrement' => EnregistrementJSON::class,
         ];
     }
 
@@ -58,3 +59,4 @@ class EnregistrementFinalise extends Model
         return $this->belongsTo(Bilan::class);
     }
 }
+
