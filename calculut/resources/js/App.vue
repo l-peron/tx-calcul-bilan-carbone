@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-    import HeaderComponent from "./components/HeaderComponent.vue";
+    import HeaderComponent from "./components/header/HeaderComponent.vue";
     import Toast from "primevue/toast";
     import ConfirmDialog from "primevue/confirmdialog";
     import DynamicDialog from "primevue/dynamicdialog";
@@ -37,5 +37,6 @@
         position: fixed;
         top: 0;
         width: 100%;
+        z-index: 10;
     }
 </style>

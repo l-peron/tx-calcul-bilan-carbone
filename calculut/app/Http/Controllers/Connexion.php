@@ -50,10 +50,29 @@ class Connexion extends Controller
                     ]
                 );
 
+                // Make a request to the authentication server to get user associations
+                $response = Http::withToken($accessToken)->get('https://auth.assos.utc.fr/api/user/associations/current');
+
+                if ($response->failed()) {
+                    return response()->json(['message' => 'Error while getting user infos','JWT_ERROR' => true], 401);
+                }
+                $userAssos = $response->json();
+
+                $userDetails = $provider->getResourceOwner($accessToken);
+                $userFullName = $userDetails->toArray()['firstName'] . " " . $userDetails->toArray()['lastName'];
+
+
+                if(in_array($userDetails->toArray()['email'], config()->get('app')['default_admins'])) {
+                    array_push($userAssos, [ "shortname" => "BDE"]);
+                }
+
+                $request->session()->put('assos', $userAssos);
+                $request->session()->put('fullName', $userFullName);
+
                 // Create a cookie with the access token and set its expiration time to 1440 minutes (24 hours)
                 $cookie = cookie(config('app.token_name'), $accessToken, 1440);
 
-                return redirect('/')->withCookie($cookie);
+                return redirect('/' . $userAssos[0]['shortname'])->withCookie($cookie);
 
             } catch (IdentityProviderException $e) {
                 dd($e->getMessage());

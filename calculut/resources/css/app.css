@@ -17,5 +17,9 @@
     margin-bottom: 1px;
 }
 
+.p-menubar .p-menuitem-content:hover {
+    @apply bg-green-200;
+}
+
 
 

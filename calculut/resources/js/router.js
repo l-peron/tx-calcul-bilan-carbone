@@ -2,12 +2,18 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "./pages/HomeView.vue";
 import TestView from "./pages/TestView.vue";
 import ListDonneesView from "./pages/donnees/ListDonneesView.vue";
-import ListBilansView from "./pages/bilans/admin/ListBilansAdminView.vue";
-import CreateBilanUtilisateurView from "./pages/bilans/utilisateur/CreateBilanUtilisateurView.vue";
+import CreateBilanUtilisateurView from "./pages/bilans/utilisateur/EditBilanUtilisateurView.vue";
+import ListBilansUtilisateurView from "./pages/bilans/utilisateur/ListBilansUtilisateurView.vue";
+import ListBilansAdminView from "./pages/bilans/admin/ListBilansAdminView.vue";
+import AccueilUtilisateurView from "./pages/accueil/AccueilUtilisateurView.vue";
 
 const routes = [
     {
-        path: "/",
+        path: "/assos/:asso",
+        component: AccueilUtilisateurView,
+    },
+    {
+        path: "/admin",
         component: HomeView,
     },
     {
@@ -15,7 +21,11 @@ const routes = [
         component: TestView,
     },
     {
-        path: "/assos/bilans/edit/:id",
+        path: "/assos/:asso/bilans",
+        component: ListBilansUtilisateurView
+    },
+    {
+        path: "/assos/:asso/bilans/:id/edit",
         component: CreateBilanUtilisateurView
     },
     {
@@ -24,8 +34,8 @@ const routes = [
     },
     {
         path: "/admin/bilans",
-        component: ListBilansView
-    }
+        component: ListBilansAdminView
+    },
 ];
 
 export default createRouter({

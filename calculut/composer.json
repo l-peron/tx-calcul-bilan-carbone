@@ -6,12 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-openssl": "*",
         "firebase/php-jwt": "^6.10",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "league/oauth2-client": "^2.7",
-        "ext-openssl": "*"
+        "league/oauth2-client": "^2.7"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

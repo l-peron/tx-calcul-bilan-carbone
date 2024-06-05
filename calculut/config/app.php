@@ -60,6 +60,8 @@ return [
     'OAUTH_clientSecret' => env('OAUTH_CLIENT_SECRET'),
     'OAUTH_redirectUri' => env('APP_ENV')== 'prod' ? env('OAUTH_REDIRECT_URI'):'http://localhost:8000/auth',
 
+    'default_admins' => env('APP_ENV') == 'prod' ? [] : ['leo.peron@etu.utc.fr', 'julie.chartier@etu.utc.fr'],
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

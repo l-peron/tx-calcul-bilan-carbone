@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('type', ['event'])->default('event')->nullable(false);
             $table->string('auteur', length: 200)->nullable(false);
             $table->string('asso', length: 200)->nullable(false);
-            $table->string('pole_asso', length: 200)->nullable(false);
+            $table->string('pole_asso', length: 200)->nullable(true);
             $table->jsonb('enregistrement')->nullable();
         });
     }
