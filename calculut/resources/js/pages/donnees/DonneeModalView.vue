@@ -15,6 +15,8 @@
     const toast = useToast();
     const dialogRef = inject('dialogRef');
 
+    let editMode = false;
+
     const metriques = ref([
         "CO2"
     ]);
@@ -61,14 +63,24 @@
     });
 
     onMounted(() => {
-        if(dialogRef.value.data.donnee.id !== undefined)
+        if(dialogRef.value.data.donnee.id !== undefined) {
             setValues(dialogRef.value.data.donnee);
+            editMode = true;
+        }
     });
 
     const onSubmit = handleSubmit(values => {
-        donneeService.createDonnee(values).then(() => {
-            toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'La donnée a bien été créée', life: 5000 });
-        })
+        if(editMode) {
+            donneeService.updateDonnee(values).then(() => {
+                toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'La donnée a bien été modifiée', life: 5000 });
+            });
+
+        } else {
+            donneeService.createDonnee(values).then(() => {
+                toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'La donnée a bien été créée', life: 5000 });
+            });
+        }
+
         dialogRef.value.close();
     });
 
@@ -106,8 +118,8 @@
             <Textarea id="source" v-model="source" v-bind="sourceAttrs" :invalid="errors.source != null" rows="3" cols="30" placeholder="Écrit et référence tes sources ici !"/>
         </div>
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Annuler" severity="danger" @click="cancel"></Button>
-            <Button type="submit" label="Créer" severity="success"></Button>
+            <Button type="submit" label="Appliquer" severity="primary"/>
+            <Button type="button" label="Annuler" severity="danger" outlined @click="cancel"/>
         </div>
     </form>
 </template>

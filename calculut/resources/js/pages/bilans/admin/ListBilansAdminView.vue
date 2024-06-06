@@ -74,7 +74,7 @@
             </Column>
             <Column header="Action">
                 <template #body="{ data }">
-                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/finalises'" target="_blank" rel="noopener" v-if="data.enregistrement_finalises.length">
+                    <router-link :to="'/assos/' + data.asso +'/bilans/'+ data.id + '/finalises'" target="_blank" rel="noopener" v-if="data.enregistrement_finalises.length">
                         <Button label="Consulter" icon="pi pi-eye" outlined class="mr-2" severity="secondary"/>
                     </router-link>
                     <router-link :to="'/assos/' + data.asso +'/bilans/'+ data.id + '/edit'" target="_blank" rel="noopener">

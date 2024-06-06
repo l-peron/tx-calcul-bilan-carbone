@@ -27,7 +27,6 @@
 
     const asso = router.currentRoute.value.path.split("/")[2]
 
-
     async function recupererBilans() {
         bilanService.getBilansByAsso(asso).then(data => {
             bilans.value = data;
@@ -122,10 +121,10 @@
             </Column>
             <Column style="min-width:8rem" header="Action">
                 <template #body="{ data }">
-                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/finalises'" target="_blank" rel="noopener" v-if="data.enregistrement_finalises.length">
+                    <router-link :to="'/assos/' + data.asso +'/bilans/'+ data.id + '/finalises'" target="_blank" rel="noopener" v-if="data.enregistrement_finalises.length">
                         <Button label="Consulter" icon="pi pi-eye" outlined class="mr-2" severity="secondary"/>
                     </router-link>
-                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/edit'" target="_blank" rel="noopener">
+                    <router-link :to="'/assos/' + data.asso +'/bilans/'+ data.id + '/edit'" target="_blank" rel="noopener">
                         <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2"/>
                     </router-link>
                     <Button label="Dupliquer" icon="pi pi-clone" outlined severity="contrast" class="mr-2" @click="confirmDuplicateBilan(data.id)"/>

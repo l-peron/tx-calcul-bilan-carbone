@@ -39,7 +39,7 @@
             <div class="flex flex-row items-center justify-between">
                 <h2 class="text-lg font-semibold my-0 mb-1">{{ formulaire.intitule }}</h2>
                 <div>
-                    <Button v-if="!editFormulaire" label="Éditer le formulaire" icon="pi pi-pencil" severity="warning" outlined @click="editFormulaire=true" class="mr-4"></Button>
+                    <Button v-if="!editFormulaire" label="Éditer le formulaire" icon="pi pi-pencil" severity="warning" outlined @click="editFormulaire=true" class="mr-4"/>
                     <Button label="Retirer le formulaire" icon="pi pi-times" severity="danger" outlined @click="removeFormulaire"/>
                 </div>
 

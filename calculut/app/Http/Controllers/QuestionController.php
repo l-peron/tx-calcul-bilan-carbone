@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\QuestionType;
 use App\Models\Formulaire;
 use App\Models\Question;
+use App\Services\QuestionService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class QuestionController extends Controller
 {
+    public function __construct(private QuestionService $questionService){}
+
     /**
      * Display a listing of the resource.
      */
@@ -22,9 +27,15 @@ class QuestionController extends Controller
      */
     public function store(string $formulaire, Request $request): Question
     {
-        $question = new Question($request->all());
-        Formulaire::findOrFail($formulaire)->questions()->save($question);
-        return $question;
+        $validatedData = $request->validate([
+            'intitule' => 'required|string',
+            'description' => 'nullable|string',
+            'variable' => 'required|string',
+            'type' => [Rule::Enum(QuestionType::class)],
+            'donneesIds' => ['nullable', 'array'],
+        ]);
+
+        return $this->questionService->createQuestion($formulaire, $validatedData);
     }
 
     /**
@@ -39,10 +50,17 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(string $formulaire, string $question, Request $request): void
+    public function update(string $formulaire, string $question, Request $request): Question
     {
-        $question = Question::findOrFail($question);
-        $question->update($request->all());
+        $validatedData = $request->validate([
+            'intitule' => 'required|string',
+            'description' => 'nullable|string',
+            'variable' => 'required|string',
+            'type' => [Rule::Enum(QuestionType::class)],
+            'donneesIds' => ['nullable', 'array'],
+        ]);
+
+        return $this->questionService->updateQuestion($formulaire, $question, $validatedData);
     }
 
     /**
