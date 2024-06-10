@@ -116,8 +116,8 @@
                 </template>
             </Column>
             <Column style="min-width:8rem" header="Exporter">
-                <template #body="slotProps">
-                    <Button icon="pi pi-download" outlined/>
+                <template #body="{ data }">
+                    <Button icon="pi pi-download" outlined :disabled="!data.enregistrement_finalises.length"/>
                 </template>
             </Column>
             <Column style="min-width:8rem" header="Action">
