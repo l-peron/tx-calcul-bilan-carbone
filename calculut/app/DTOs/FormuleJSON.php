@@ -24,7 +24,7 @@ class FormuleJSON
 
         if($this->type == 'variable') {
             $this->name = $formule['name'];
-        } else if($this->type == 'block') {
+        } elseif($this->type == 'block') {
             $this->child = new self($formule['child']);
         } else {
             $this->a = new self($formule['a']);

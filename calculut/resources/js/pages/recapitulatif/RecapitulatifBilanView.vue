@@ -5,7 +5,7 @@
     import {useRoute} from "vue-router";
     import RecapitulatifCardComponent from "../../components/recapitulatif/RecapitulatifCardComponent.vue";
     import Chart from "primevue/chart";
-    import {forOwn, set} from "lodash";
+    import {forOwn} from "lodash";
     import {TypeFormulaire} from "../../services/FormulaireService.ts";
     import Dropdown from "primevue/dropdown";
 
@@ -90,8 +90,8 @@
             <div class="flex flex-col">
                 <div class="p-8 shadow border border-emerald-800 border-solid rounded-2xl">
                     <div>
-                        <label>Choisir un bilan à visualiser</label>
-                        <Dropdown v-model="selectEnregistrementId" :options="optionsEnregistrement" optionLabel="label" optionValue="id" placeholder="Bilan selectionné" class="w-full my-2" @update:modelValue="fetchNewEnregistrement"/>
+                        <label for="enregistrement">Choisir un bilan à visualiser</label>
+                        <Dropdown v-model="selectEnregistrementId" :options="optionsEnregistrement" optionLabel="label" optionValue="id" placeholder="Bilan selectionné" class="w-full my-2" @update:modelValue="fetchNewEnregistrement" id="enregistrement"/>
                     </div>
                     <h1 class="my-2">{{ enregistrement.bilan.intitule }}</h1>
                     <p class="italic my-1">{{ enregistrement.commentaire }}</p>

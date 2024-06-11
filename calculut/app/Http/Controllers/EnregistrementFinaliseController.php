@@ -26,7 +26,12 @@ class EnregistrementFinaliseController extends Controller
      */
     public function store(string $bilan, Request $request): EnregistrementFinalise
     {
-        return $this->enregistrementFinaliseService->saveEnregistrementFinalise($bilan, new EnregistrementFinalise($request->all()));
+        $userFullName = $request->session()->get("fullName");
+
+        $enregistrementReq = $request->all();
+        $enregistrementReq['auteur'] = $userFullName;
+
+        return $this->enregistrementFinaliseService->saveEnregistrementFinalise($bilan, new EnregistrementFinalise($enregistrementReq));
     }
 
     /**

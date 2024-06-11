@@ -46,6 +46,7 @@
     });
 
     const onSubmit = handleSubmit(values => {
+        console.log()
         bilanService.createBilan(values, asso).then(bilan => {
             toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'Le bilan a bien été créée', life: 5000 });
             router.push(`/assos/${bilan.asso}/bilans/${bilan.id}/edit`);
@@ -59,7 +60,7 @@
 </script>
 
 <template>
-    <form>
+    <form @submit="onSubmit">
         <div class="flex flex-col gap-3 mb-3">
             <label for="intitule" class="font-semibold w-6rem">Titre du bilan</label>
             <InputText id="intitule" v-model="intitule" v-bind="intituleAttrs" class="flex-auto" :invalid="errors.intitule != null"/>
@@ -74,7 +75,7 @@
         </div>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Annuler" severity="danger" @click="cancel"></Button>
-            <Button type="button" label="Créer" severity="success"></Button>
+            <Button type="submit" label="Créer" severity="success"></Button>
         </div>
     </form>
 </template>

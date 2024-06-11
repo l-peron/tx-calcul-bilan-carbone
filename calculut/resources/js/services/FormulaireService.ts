@@ -35,8 +35,6 @@ export enum TypeFormulaire {
 export class FormulaireService {
     private endpoint = "/api/formulaires";
 
-    constructor() {}
-
     public async getFormulaires(): Promise<Formulaire[]> {
         const formulaires = await axios.get(this.endpoint);
         return Promise.resolve(formulaires.data);

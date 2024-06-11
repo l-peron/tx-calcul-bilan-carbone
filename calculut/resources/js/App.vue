@@ -28,7 +28,7 @@
     #root {
         top: 82px;
         position: fixed;
-        overflow: scroll;;
+        overflow: scroll;
         height: calc(100% - 82px);
         width: 100%;
     }

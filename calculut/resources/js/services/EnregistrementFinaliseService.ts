@@ -9,8 +9,6 @@ export class EnregistrementFinalise {
 export class EnregistrementFinaliseService {
     private endpoint = "/api/bilans";
 
-    constructor() {}
-
     public async getEnregistrementFinalises(bilan: string): Promise<EnregistrementFinalise[]> {
         const bilans = await axios.get(`${this.endpoint}/${bilan}/enregistrements`);
         return Promise.resolve(bilans.data);

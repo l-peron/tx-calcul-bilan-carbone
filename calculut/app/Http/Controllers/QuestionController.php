@@ -56,14 +56,17 @@ class QuestionController extends Controller
     public function addDonnee(string $formulaire, string $question, string $donnee): void
     {
         $question = Question::findOrFail($question);
-        if($question->type == 'saisie') return;
-        $question->donnees()->attach($donnee);
+        if($question->type != 'saisie') {
+            $question->donnees()->attach($donnee);
+        }
     }
 
     public function removeDonnee(string $formulaire, string $question, string $donnee): void
     {
         $question = Question::findOrFail($question);
-        if($question->type == 'saisie') return;
+        if($question->type == 'saisie') {
+            $question->donnees()->attach($donnee);
+        }
         $question->donnees()->detach($donnee);
     }
 }

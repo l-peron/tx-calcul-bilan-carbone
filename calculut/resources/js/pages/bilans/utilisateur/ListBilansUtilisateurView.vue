@@ -84,7 +84,7 @@
 </script>
 
 <template>
-    <div class="m-8 p-4 border border-solid border-emerald-800 rounded-2xl h-full">
+    <div class="m-8 p-4 border border-solid border-emerald-800 rounded-2xl">
         <DataTable :value="bilans" :filters="filters" paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]" stripedRows tableStyle="min-width: 50rem">
             <template #header>
                 <div>

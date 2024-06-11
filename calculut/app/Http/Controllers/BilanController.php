@@ -21,8 +21,11 @@ class BilanController extends Controller
     public function index(Request $request): Collection
     {
         $asso = $request->query('asso');
-        if($asso == null) return Bilan::with(['enregistrementFinalises', 'evenement'])->get();
-        else return Bilan::with(['enregistrementFinalises', 'evenement'])->where('asso', $asso)->get();
+        if($asso == null) {
+            return Bilan::with(['enregistrementFinalises', 'evenement'])->get();
+        } else {
+            return Bilan::with(['enregistrementFinalises', 'evenement'])->where('asso', $asso)->get();
+        }
     }
 
     public function indexByAsso(string $asso): Collection

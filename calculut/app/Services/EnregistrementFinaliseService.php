@@ -29,7 +29,7 @@ class EnregistrementFinaliseService
         $enregistrementJSON->setFormulaires($formulairesAnswered);
         $enregistrementFinalise->enregistrement = $enregistrementJSON;
 
-        $bilan = Bilan::findOrFail($bilanId)->enregistrementFinalises()->save($enregistrementFinalise);
+        Bilan::findOrFail($bilanId)->enregistrementFinalises()->save($enregistrementFinalise);
 
         return $enregistrementFinalise;
     }
@@ -49,9 +49,11 @@ class EnregistrementFinaliseService
     }
 
     /* @var QuestionJSON[] $qs */
-    function evaluateFormule(array $qs, FormuleJSON $f): int
+    private function evaluateFormule(array $qs, FormuleJSON $f): int
     {
-        if($f->getType() == "block") return $this->evaluateFormule($qs, $f->getChild());
+        if($f->getType() == "block") {
+            return $this->evaluateFormule($qs, $f->getChild());
+        }
 
         if($f->getA()->getType() == "variable" && $f->getB()->getType() == "variable") {
             $q1 = array_filter($qs, function($q) use ($f) { return $q->getVariable() == $f->getA()->getName(); });

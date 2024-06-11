@@ -66,7 +66,9 @@ class EnregistrementJSON implements Castable
         {
             public function get(Model $model, string $key, mixed $value, array $attributes): ?EnregistrementJSON
             {
-                if($value == null ) return null;
+                if($value == null ) {
+                    return null;
+                }
                 return  new EnregistrementJSON(json_decode($value, true));
             }
 

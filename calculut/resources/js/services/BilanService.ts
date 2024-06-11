@@ -25,8 +25,6 @@ enum BilanType {
 export class BilanService {
     private endpoint = "/api/bilans";
 
-    constructor() {}
-
     public async getBilans(): Promise<Bilan[]> {
         const bilans = await axios.get(this.endpoint);
         return Promise.resolve(bilans.data);
@@ -43,7 +41,7 @@ export class BilanService {
     }
 
     public async updateBilan(id: string, updateBilanDTO: CreateBilanDTO, enregistrement: Object): Promise<boolean> {
-        const isUpdated = await axios.put(this.endpoint + '/' + id, {
+        await axios.put(this.endpoint + '/' + id, {
             intitule: updateBilanDTO.intitule,
             debut: updateBilanDTO.debut,
             fin: updateBilanDTO.fin,

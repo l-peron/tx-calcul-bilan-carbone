@@ -1,8 +1,7 @@
 <script setup>
     import Textarea from "primevue/textarea";
     import Button from "primevue/button";
-    import { inject } from "vue";
-    import {onMounted, ref} from "vue";
+    import {inject, onMounted, ref} from "vue";
     import {useToast} from "primevue/usetoast";
     import {EnregistrementFinaliseService} from "../../../services/EnregistrementFinaliseService.ts";
 
@@ -23,13 +22,13 @@
         const enregistrementFinalise = {
             commentaire: commentaire.value,
             enregistrement: enregistrement.value,
-            auteur: 'auteur',
         }
+
         await enregistrementFinaliseService.createEnregistrementFinalise(dialogRef.value.data.bilanId, enregistrementFinalise)
 
         dialogRef.value.close();
 
-        toast.add({ severity: 'info', summary: 'Confirmation', detail: 'La donnée a été modifiée', life: 3000 });
+        toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été finalisé', life: 3000 });
     }
 
     function cancel() {
@@ -48,7 +47,3 @@
         <Button type="button" label="Finaliser" severity="success" @click="confirm"></Button>
     </div>
 </template>
-
-<style scoped>
-
-</style>

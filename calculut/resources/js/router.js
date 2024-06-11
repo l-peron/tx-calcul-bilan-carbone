@@ -35,6 +35,10 @@ const routes = [
         path: "/admin/bilans",
         component: ListBilansAdminView
     },
+    {
+        path: "/:pathMatch(.*)*",
+        component: AccueilUtilisateurView,
+    }
 ];
 
 export default createRouter({
