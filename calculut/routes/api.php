@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EnregistrementFinaliseController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\BilanController;
 use App\Http\Controllers\DonneeController;
@@ -23,9 +24,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::apiResource('formulaires.questions', QuestionController::class);
 
     // Bilans
-    Route::post('bilans/{bilan}/formulaires/{formulaire}', [BilanController::class, 'addFormulaire']);
-    Route::delete('bilans/{bilan}/formulaires/{formulaire}', [BilanController::class, 'removeFormulaire']);
+    Route::post('bilans/{bilan}/duplicate', [BilanController::class, 'duplicate']);
     Route::apiResource('bilans', BilanController::class);
+
+    // Enregistrement finalisés
+    Route::apiResource('bilans.enregistrements',EnregistrementFinaliseController::class);
 });
 
 

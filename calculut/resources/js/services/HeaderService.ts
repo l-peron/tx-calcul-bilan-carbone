@@ -9,11 +9,14 @@ export class Asso {
 export class HeaderService {
     private endpoint = "/api/assos";
 
-    constructor() {}
-
     public async getIdentity(): Promise<Identity> {
         const assos = await axios.get(this.endpoint);
         return Promise.resolve(assos.data);
+    }
+
+    public async logoutUser(): Promise<void> {
+        await axios.post("/logout");
+        return Promise.resolve();
     }
 
 }

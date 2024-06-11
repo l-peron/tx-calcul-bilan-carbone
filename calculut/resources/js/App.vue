@@ -2,7 +2,7 @@
     <HeaderComponent id="header"></HeaderComponent>
     <div id="root">
         <Toast />
-        <ConfirmDialog></ConfirmDialog>
+        <ConfirmDialog />
         <DynamicDialog />
         <router-view v-slot="{ Component, route }">
             <div :key="route.name" class="h-full">
@@ -28,7 +28,7 @@
     #root {
         top: 82px;
         position: fixed;
-        overflow: scroll;;
+        overflow: scroll;
         height: calc(100% - 82px);
         width: 100%;
     }

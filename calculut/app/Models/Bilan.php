@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DTOs\EnregistrementJSON;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $auteur
  * @property string $asso
  * @property string $pole_asso
- * @property array|null $enregistrement
+ * @property EnregistrementJSON $enregistrement
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EnregistrementFinalise> $enregistrementFinalises
  * @property-read int|null $enregistrement_finalises_count
  * @property-read \App\Models\Evenement|null $evenement
@@ -65,7 +66,7 @@ class Bilan extends Model
             'auteur' => 'string',
             'asso' => 'string',
             'pole_asso' => 'string',
-            'enregistrement' => 'array',
+            'enregistrement' => EnregistrementJSON::class,
         ];
     }
 

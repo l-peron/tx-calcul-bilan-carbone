@@ -9,8 +9,7 @@
     import {DonneeService} from '../../services/DonneeService.ts';
     import { ref, onMounted } from 'vue';
     import {FilterMatchMode} from "primevue/api";
-    import CreateDonneeModalView from "./CreateDonneeModalView.vue";
-    import EditDonneeModalView from "./EditDonneeModalView.vue";
+    import CreateDonneeModalView from "./DonneeModalView.vue";
     import {useConfirm} from "primevue/useconfirm";
     import {useDialog} from "primevue/usedialog";
 
@@ -35,26 +34,19 @@
     onMounted(async() => {
         await recupererDonnees();
     });
-    function ouvrirCreateDonnee() {
+    function ouvrirModalDonnee(donnee = undefined) {
         dialog.open(CreateDonneeModalView, {
-            props: { header: 'Créer une donnée', modal: true},
+            props: { header: 'Ajouter ou modifier une donnée', modal: true},
+            data: {
+                donnee: donnee
+            },
             onClose: () => {
                 recupererDonnees();
             }
         });
     }
 
-    function ouvrirEditDonnee(donnee) {
-        dialog.open(EditDonneeModalView, {
-            props: { header: 'Modifier une donnée', modal: true},
-            data: { donnee },
-            onClose: () => {
-                recupererDonnees();
-            }
-        });
-    }
-
-    function confirmDeleteDonnee(donnee) {
+    function confirmDeleteDonnee(donnee = undefined) {
         confirm.require({
             message: 'Es-tu sûr de vouloir supprimer la donnée ? (Pense aux questions associées !)',
             header: 'Supprimer la donnée',
@@ -77,7 +69,7 @@
                 <div>
                     <h1 class="text-xl font-bold my-2">Liste des données</h1>
                     <div class="flex flex-row items-center justify-between">
-                        <Button label="Créer une donnée" severity="primary" @click="ouvrirCreateDonnee"/>
+                        <Button label="Créer une donnée" severity="primary" @click="ouvrirModalDonnee"/>
                         <IconField iconPosition="left">
                             <InputIcon class="pi pi-search"> </InputIcon>
                             <InputText v-model="filters['global'].value" placeholder="Rechercher une donnée..." id="search_donnee"/>
@@ -101,7 +93,7 @@
             </Column>
             <Column  style="min-width:8rem">
                 <template #body="slotProps">
-                    <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="ouvrirEditDonnee(slotProps.data)" />
+                    <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="ouvrirModalDonnee(slotProps.data)" />
                     <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteDonnee(slotProps.data)" />
                 </template>
             </Column>

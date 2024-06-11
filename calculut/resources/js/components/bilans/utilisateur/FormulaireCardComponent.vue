@@ -9,13 +9,12 @@
     const emit = defineEmits(['removeFormulaire', 'saveFormulaire']);
 
     function generateRef() {
-        const ref = []
+        const ref = {}
         for(const question of props.formulaire.questions) {
-            let reponse = undefined
-            if(props.formulaire.reponses)
-                reponse = props.formulaire.reponses.find(r => r.question.id === question.id)?.reponse
-
-            ref.push({question, reponse: reponse ? reponse : '0'})
+            ref[question.id] = {
+                ...question,
+                reponse: question.reponse ? question.reponse : 0
+            }
         }
         return ref;
     }
@@ -51,7 +50,7 @@
         </template>
         <template #content v-if="editFormulaire">
             <div class="flex flex-col gap-6">
-                <QuestionCardComponent v-model="reponses.find(r => r.question.id === question.id).reponse" :question="question" v-for="question in formulaire.questions" />
+                <QuestionCardComponent v-model="reponses[question.id].reponse" :question="question" v-for="question in formulaire.questions" />
             </div>
         </template>
         <template #footer v-if="editFormulaire">
@@ -62,7 +61,3 @@
         </template>
     </Card>
 </template>
-
-<style scoped>
-
-</style>

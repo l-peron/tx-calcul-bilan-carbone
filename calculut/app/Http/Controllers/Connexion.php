@@ -72,7 +72,7 @@ class Connexion extends Controller
                 // Create a cookie with the access token and set its expiration time to 1440 minutes (24 hours)
                 $cookie = cookie(config('app.token_name'), $accessToken, 1440);
 
-                return redirect('/' . $userAssos[0]['shortname'])->withCookie($cookie);
+                return redirect('/assos/' . $userAssos[0]['shortname'])->withCookie($cookie);
 
             } catch (IdentityProviderException $e) {
                 dd($e->getMessage());

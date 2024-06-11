@@ -16,8 +16,6 @@ enum Metrique {
 export class DonneeService {
     private endpoint = "/api/donnees";
 
-    constructor() {}
-
     public async getDonnees(): Promise<Donnee[]> {
         const donnees = await axios.get(this.endpoint);
         return Promise.resolve(donnees.data);

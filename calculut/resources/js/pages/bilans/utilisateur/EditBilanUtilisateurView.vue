@@ -12,25 +12,54 @@
     import {BilanService} from "../../../services/BilanService.ts";
     import {useToast} from "primevue/usetoast";
     import {useConfirm} from "primevue/useconfirm";
+    import FinaliserBilanModalView from "./FinaliserBilanModalView.vue";
+    import {useDialog} from "primevue/usedialog";
+    import {date, object, string} from "yup";
+    import {useForm} from "vee-validate";
 
     const formulaireService = new FormulaireService();
     const bilanService = new BilanService();
+
     const routes = useRoute();
     const router = useRouter();
     const confirm = useConfirm();
     const toast = useToast();
+    const dialog = useDialog();
+
+    const validationSchema = object({
+        intitule: string().required(),
+        debut: date().required(),
+        fin: date().required().test('finApresDebut', (fin, testContext) => {
+            return fin > testContext.parent.debut;
+        })
+    });
+
+    const initialValues = {
+        intitule: "",
+        debut: new Date(),
+        fin: new Date(),
+    }
+
+    const { handleSubmit, defineField, errors, setValues } = useForm({
+        validationSchema, initialValues
+    });
+
+    const [intitule, intituleAttrs] = defineField('intitule', {
+        validateOnModelUpdate: false,
+    });
+    const [debut, debutAttrs] = defineField('debut', {
+        validateOnModelUpdate: false,
+    });
+    const [fin, finAttrs] = defineField('fin', {
+        validateOnModelUpdate: false,
+    });
 
 
     const formulaires = ref();
-    const selectedFormulaires = ref([]);
-    const answeredFormulaires = ref({});
+    const selectedFormulaires = ref({});
     const nodes = ref(map(TypeFormulaire, (label, key) => {
         return { key, label, children: [] };
     }));
-
-    const titre_bilan = ref("");
-    const debut_event = ref();
-    const fin_event = ref();
 
     async function recupererFormulaires() {
         await formulaireService.getFormulaires().then(data => {
@@ -42,16 +71,20 @@
         await recupererFormulaires();
 
         await bilanService.getBilan(routes.params.id).then(bilan => {
-            titre_bilan.value = bilan.intitule
+            setValues({
+                intitule: bilan.intitule,
+                debut: new Date(bilan.evenement.debut * 1000),
+                fin: new Date(bilan.evenement.fin * 1000)
+            });
 
-            if(bilan.enregistrement) {
+            if(bilan.enregistrement?.formulaires?.length) {
                 for(const formulaire of bilan.enregistrement.formulaires) {
-                    answeredFormulaires.value[formulaire.id] = formulaire.reponses
-                    selectedFormulaires.value.push(formulaire)
+                    selectedFormulaires.value[formulaire.id] = formulaire;
                 }
             }
         })
 
+        // Génération des formulaires remplissables à gauche
         for(const formulaire of formulaires.value) {
             const node_index = nodes.value.findIndex(n => n.key === formulaire.secteur)
             nodes.value[node_index].children.push({ key: formulaire.id, label: formulaire.intitule, type: 'formulaire' })
@@ -60,7 +93,7 @@
 
     async function selectionerFormulaire(id) {
         await formulaireService.getFormulaire(id).then(formulaire => {
-            selectedFormulaires.value.push(formulaire)
+            selectedFormulaires.value[formulaire.id] = formulaire;
         });
     }
 
@@ -71,30 +104,26 @@
     }
 
     function removeFormulaire(id) {
-        selectedFormulaires.value = selectedFormulaires.value.filter(f => f.id !== id)
-        delete answeredFormulaires.value[id]
+        delete selectedFormulaires.value[id];
     }
 
     function saveFormulaire(id, reponses) {
-        console.log(reponses)
-        answeredFormulaires.value[id] = reponses
+        selectedFormulaires.value[id].questions = reponses
     }
 
-    async function saveBilan() {
-        const formulairesEnregistrement = map(answeredFormulaires.value, (questions, id) => {
-            const formulaire = selectedFormulaires.value.find(f => f.id === id)
-            formulaire.reponses = questions
-            return formulaire;
-        })
-
-        await bilanService.updateBilan(routes.params.id, titre_bilan.value, {
+    function getEnregistrement() {
+        return {
             date: new Date(),
             auteur: 'auteur',
-            formulaires: formulairesEnregistrement
-        }).then(() => {
+            formulaires: selectedFormulaires.value
+        };
+    }
+
+    const onSubmit = handleSubmit(async values => {
+        await bilanService.updateBilan(routes.params.id, values, getEnregistrement()).then(() => {
             toast.add({ severity: 'success', summary: 'Bilan sauvegardé !', detail: 'Le bilan a bien été sauvegardé', life: 5000 });
         });
-    }
+    });
 
     function confirmDeleteBilan() {
         confirm.require({
@@ -107,6 +136,16 @@
                 await bilanService.deleteBilan(routes.params.id);
                 toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été supprimé', life: 3000 });
                 await router.push(`/assos/${routes.params.asso}/bilans`)
+            },
+        });
+    }
+
+    function confirmFinaliserBilan() {
+        dialog.open(FinaliserBilanModalView, {
+            props: { header: 'Finaliser le bilan', modal: true},
+            data: {
+                bilanId: routes.params.id,
+                enregistrement: getEnregistrement()
             },
         });
     }
@@ -128,36 +167,38 @@
                 </Tree>
             </div>
         </div>
-        <div class="p-6 overflow-y-scroll bg-stone-100">
+        <div class="p-6 overflow-y-scroll bg-stone-100 w-full">
             <div class="flex flex-col gap-4">
-                <Card id="bilan_creation_form">
-                    <template #title>
-                        <div class="flex flex-row items-center justify-between">
-                            <h1 class="text-xl font-bold my-2">Création d'un Bilan</h1>
-                            <div class="flex flex-row gap-2">
-                                <Button label="Sauvegarder" severity="primary" @click="saveBilan"/>
-                                <Button label="Finaliser" severity="secondary"/>
-                                <Button label="Supprimer" severity="danger" outlined @click="confirmDeleteBilan" />
+                <form @submit="onSubmit">
+                    <Card id="bilan_creation_form">
+                        <template #title>
+                            <div class="flex flex-row items-center justify-between">
+                                <h1 class="text-xl font-bold my-2">Création d'un Bilan</h1>
+                                <div class="flex flex-row gap-2">
+                                    <Button type="submit" label="Sauvegarder" severity="primary"/>
+                                    <Button label="Finaliser" severity="secondary" @click="confirmFinaliserBilan"/>
+                                    <Button label="Supprimer" severity="danger" outlined @click="confirmDeleteBilan" />
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                    <template #content>
-                        <div class="flex flex-row mt-2 items-center gap-16 m-0">
-                            <div class="flex flex-col">
-                                <label for="titreBilan" class="font-bold block mb-2">Titre du bilan</label>
-                                <InputText v-model="titre_bilan" placeholder="Création d'un bilan, ex: SDF P24" id="titreBilan" class="w-96"/>
+                        </template>
+                        <template #content>
+                            <div class="flex flex-row mt-2 items-center gap-16 m-0">
+                                <div class="flex flex-col">
+                                    <label for="titreBilan" class="font-bold block mb-2">Titre du bilan</label>
+                                    <InputText v-model="intitule" placeholder="Création d'un bilan, ex: SDF P24" id="titreBilan" class="w-96" :invalid="errors.intitule != null"/>
+                                </div>
+                                <div class="flex flex-col">
+                                    <label for="dateDebut" class="font-bold block mb-2">Date de début</label>
+                                    <Calendar v-model="debut" showIcon iconDisplay="input" inputId="dateDebut" dateFormat="dd/mm/yy" :invalid="errors.debut != null"/>
+                                </div>
+                                <div class="flex flex-col">
+                                    <label for="dateFin" class="font-bold block mb-2">Date de fin</label>
+                                    <Calendar v-model="fin" showIcon iconDisplay="input" inputId="dateFin" dateFormat="dd/mm/yy" :invalid="errors.fin != null"/>
+                                </div>
                             </div>
-                            <div class="flex flex-col">
-                                <label for="dateDebut" class="font-bold block mb-2">Date de début</label>
-                                <Calendar v-model="debut_event" showIcon iconDisplay="input" inputId="dateDebut" />
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="dateFin" class="font-bold block mb-2">Date de fin</label>
-                                <Calendar v-model="fin_event" showIcon iconDisplay="input" inputId="dateFin" />
-                            </div>
-                        </div>
-                    </template>
-                </Card>
+                        </template>
+                    </Card>
+                </form>
                 <div v-for="formulaire in selectedFormulaires">
                     <QuestionUtilisateurCardComponent :key="formulaire.id" :formulaire="formulaire" @removeFormulaire="removeFormulaire" @saveFormulaire="saveFormulaire"/>
                 </div>

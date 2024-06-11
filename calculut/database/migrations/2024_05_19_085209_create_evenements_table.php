@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->dateTime('debut')->nullable(false);
             $table->dateTime('fin')->nullable(false);
-            $table->string('description', length: 200)->nullable(false);
+            $table->string('description', length: 200)->nullable(true);
         });
     }
 

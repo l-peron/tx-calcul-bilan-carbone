@@ -5,16 +5,9 @@
     import InputText from 'primevue/inputtext';
     import IconField from "primevue/iconfield";
     import InputIcon from "primevue/inputicon";
-    import { useToast } from "primevue/usetoast";
     import { ref, onMounted } from 'vue';
     import {FilterMatchMode} from "primevue/api";
-    import {useConfirm} from "primevue/useconfirm";
-    import {useDialog} from "primevue/usedialog";
     import {BilanService} from "../../../services/BilanService.ts";
-
-    const toast = useToast();
-    const confirm = useConfirm();
-    const dialog = useDialog();
 
     const bilanService = new BilanService();
 
@@ -35,24 +28,14 @@
         await recupererBilans();
     });
 
-    function confirmDeleteBilan(bilanId) {
-        confirm.require({
-            message: 'Es-tu sûr de vouloir supprimer le bilan ?',
-            header: 'Supprimer le bilan',
-            icon: 'pi pi-exclamation-triangle',
-            rejectLabel: 'Annuler',
-            acceptLabel: 'Supprimer',
-            accept: async function() {
-                await bilanService.deleteBilan(bilanId);
-                await recupererBilans();
-                toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le bilan a bien été supprimé', life: 3000 });
-            },
-        });
+    function parseDate(timestamp) {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleString("fr").split(" ")[0]
     }
 </script>
 
-<template class="h-full">
-    <div class="m-8 p-4 border border-solid border-emerald-800 rounded-2xl h-full">
+<template>
+    <div class="m-8 p-4 border border-solid border-emerald-800 rounded-2xl">
         <DataTable :value="bilans" :filters="filters" paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]" stripedRows tableStyle="min-width: 50rem">
             <template #header>
                 <div>
@@ -66,7 +49,16 @@
                 </div>
             </template>
             <Column field="intitule" header="Nom" />
-            <Column field="type" header="Type"></Column>
+            <Column header="Début">
+                <template #body="{ data }">
+                    <span>{{ parseDate(data.evenement.debut) }}</span>
+                </template>
+            </Column>
+            <Column header="Fin">
+                <template #body="{ data }">
+                    <span>{{ parseDate(data.evenement.fin) }}</span>
+                </template>
+            </Column>
             <Column field="asso" header="Association"></Column>
             <Column field="auteur" header="Auteur"></Column>
             <Column header="État">
@@ -75,15 +67,19 @@
                     <span v-else>En cours</span>
                 </template>
             </Column>
-            <Column style="min-width:8rem" header="Exporter">
+            <Column header="Exporter">
                 <template #body="{ data }">
                     <Button icon="pi pi-download" outlined :disabled="!data.enregistrement_finalises.length"/>
                 </template>
             </Column>
-            <Column style="min-width:8rem" header="Action">
+            <Column header="Action">
                 <template #body="{ data }">
-                    <Button icon="pi pi-pencil" outlined rounded class="mr-2"/>
-                    <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteBilan(data.id)"/>
+                    <router-link :to="'/assos/' + asso +'/bilans/'+ data.id + '/finalises'" target="_blank" rel="noopener" v-if="data.enregistrement_finalises.length">
+                        <Button label="Consulter" icon="pi pi-eye" outlined class="mr-2" severity="secondary"/>
+                    </router-link>
+                    <router-link :to="'/assos/' + data.asso +'/bilans/'+ data.id + '/edit'" target="_blank" rel="noopener">
+                        <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2"/>
+                    </router-link>
                 </template>
             </Column>
         </DataTable>

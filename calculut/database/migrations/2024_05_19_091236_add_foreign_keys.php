@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::table('questions', function (Blueprint $table) {
             $table->foreignUuid('formulaire_id');
-            $table->foreign('formulaire_id')->references('id')->on('formulaires')->cascadeOnDelete();
+            $table->foreign('formulaire_id')->references('id')->on('formulaires');
         });
 
         Schema::table('enregistrement_finalises', function (Blueprint $table) {
             $table->foreignUuid('bilan_id');
-            $table->foreign('bilan_id')->references('id')->on('bilans')->cascadeOnDelete();
+            $table->foreign('bilan_id')->references('id')->on('bilans');
         });
 
         Schema::table('evenements', function (Blueprint $table) {
             $table->foreignUuid('bilan_id');
-            $table->foreign('bilan_id')->references('id')->on('bilans')->cascadeOnDelete();
+            $table->foreign('bilan_id')->references('id')->on('bilans');
         });
     }
 

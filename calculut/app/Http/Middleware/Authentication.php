@@ -8,6 +8,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use LogicException;
 use Symfony\Component\HttpFoundation\Response;
 use UnexpectedValueException;
@@ -35,7 +36,19 @@ class Authentication
             $public_key_path = storage_path('app/keys/public.key');
             $public_key = openssl_get_publickey('file://' . $public_key_path);
 
-            $decoded_uuid = JWT::decode($token, new Key($public_key, 'RS256'))->sub;
+            JWT::decode($token, new Key($public_key, 'RS256'));
+
+            // Enrich the session
+            $userAssos = Http::withToken($token)->get('https://auth.assos.utc.fr/api/user/associations/current')->json();
+            $identity = Http::withToken($token)->get('https://auth.assos.utc.fr/api/user')->json();
+            $userFullName = $identity['firstName'] . " " . $identity['lastName'];
+
+            if(in_array($identity['email'], config()->get('app')['default_admins'])) {
+                array_push($userAssos, [ "shortname" => "BDE"]);
+            }
+
+            $request->session()->put('assos', $userAssos);
+            $request->session()->put('fullName', $userFullName);
 
         } catch (ExpiredException) {
             return response()->json(['message' => 'Json Web Token Expired', 'JWT_ERROR' => true], 401);
