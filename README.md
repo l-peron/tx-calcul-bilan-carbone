@@ -25,7 +25,13 @@ Un formulaire comprend un intitulé, un secteur, une description, une formule et
 - Une saisie numérique de l'utilisateur.
 - Une question à choix uniques, chaque choix unique est rattachée à une donnée créée préalablement par le BDE.
 
+Une question possède également un nom de variable qui est unique, permettant d'en faire référence lors de la création de la formule.
+
 La formule du formulaire permet de créer le lien entre les différentes questions afin de calculer l'émission liée au sujet du formulaire.
 
 _Exemple: Un formulaire a été créé pour estimer l'émission carbonne lié au transport des participants. Celui-ci est rattaché au secteur "Transport" et comprend 3 questions:_
 - _"Quel type de transport a été utilisé ? Choix unique parmis: [Navette, Avion, Train,...]"_
+- _"Combien de participants ont été transporté ? Saisie numérique de l'utilisateur"_
+- _"Combien de KMs a été réalisé ? Saisie numérique de l'utilisateur"_
+
+_La formule étant "typeTransport * nbKm * nbpersonnes", il est possède de calculer l'émission lié au transport des participants._
