@@ -81,11 +81,11 @@
     <form @submit="onSubmit">
         <div class="flex flex-col gap-3 mb-3">
             <label for="intitule" class="font-semibold w-6rem">Intitulé</label>
-            <InputText id="intitule" v-model="intitule" v-bind="intituleAttrs" :invalid="errors.intitule != null" class="flex-auto" placeholder="Entre le titre de la donnée ici"/>
+            <InputText id="intitule" v-model="intitule" v-bind="intituleAttrs" :invalid="errors.intitule != null" class="flex-auto" placeholder="Titre de la donnée"/>
         </div>
         <div class="flex flex-col gap-3 mb-5">
             <label for="description" class="font-semibold w-6rem">Description</label>
-            <Textarea id="description" v-model="description" v-bind="descriptionAttrs" rows="3" cols="30" placeholder="Entre la description de la donnée ici"/>
+            <Textarea id="description" v-model="description" v-bind="descriptionAttrs" rows="3" cols="30" placeholder="Description de la donnée"/>
         </div>
         <div class="flex flex-row gap-3">
             <div class="flex flex-col gap-3 mb-5">
@@ -103,7 +103,7 @@
         </div>
         <div class="flex flex-col gap-3 mb-5">
             <label for="source" class="font-semibold w-6rem">Source</label>
-            <Textarea id="source" v-model="source" v-bind="sourceAttrs" :invalid="errors.source != null" rows="3" cols="30" placeholder="Écrit et référence tes sources ici !"/>
+            <Textarea id="source" v-model="source" v-bind="sourceAttrs" :invalid="errors.source != null" rows="3" cols="30" placeholder="Référence des sources"/>
         </div>
         <div class="flex justify-content-end gap-2">
             <Button type="submit" label="Appliquer" severity="primary" :disabled="!meta.valid"/>

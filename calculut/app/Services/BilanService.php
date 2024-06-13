@@ -26,12 +26,6 @@ class BilanService
     {
         $bilan = Bilan::findOrFail($id);
         $bilan->update($request->all());
-
-        $bilan->formulaires()->detach();
-        foreach($bilan->enregistrement->getFormulaires() as $formulaire) {
-            $bilan->formulaires()->attach($formulaire->getId());
-        }
-
         $bilan->evenement->update($request->all());
     }
 
