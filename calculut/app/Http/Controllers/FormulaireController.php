@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bilan;
 use App\Models\Formulaire;
 use App\Models\Question;
 use Illuminate\Database\Eloquent\Collection;
@@ -12,9 +13,14 @@ class FormulaireController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Collection
+    public function index(Request $request): Collection
     {
-        return Formulaire::all();
+        $publie = $request->query('publie');
+        if($publie == null) {
+            return Formulaire::all();
+        } else {
+            return Formulaire::where('publie', true)->get();
+        }
     }
 
     /**

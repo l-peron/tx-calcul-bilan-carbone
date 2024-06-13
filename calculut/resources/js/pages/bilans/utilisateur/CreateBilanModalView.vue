@@ -35,15 +35,9 @@
         validationSchema, initialValues
     });
 
-    const [intitule, intituleAttrs] = defineField('intitule', {
-        validateOnModelUpdate: false,
-    });
-    const [debut, debutAttrs] = defineField('debut', {
-        validateOnModelUpdate: false,
-    });
-    const [fin, finAttrs] = defineField('fin', {
-        validateOnModelUpdate: false,
-    });
+    const [intitule, intituleAttrs] = defineField('intitule');
+    const [debut, debutAttrs] = defineField('debut');
+    const [fin, finAttrs] = defineField('fin');
 
     const onSubmit = handleSubmit(values => {
         bilanService.createBilan(values, asso).then(bilan => {

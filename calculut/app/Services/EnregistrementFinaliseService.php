@@ -55,6 +55,11 @@ class EnregistrementFinaliseService
             return $this->evaluateFormule($qs, $f->getChild());
         }
 
+        if($f->getType() == "variable") {
+            $q1 = array_filter($qs, function($q) use ($f) { return $q->getVariable() == $f->getName(); });
+            return reset($q1)->getReponse();
+        }
+
         if($f->getA()->getType() == "variable" && $f->getB()->getType() == "variable") {
             $q1 = array_filter($qs, function($q) use ($f) { return $q->getVariable() == $f->getA()->getName(); });
             $q2 = array_filter($qs, function($q) use ($f) { return $q->getVariable() == $f->getB()->getName(); });

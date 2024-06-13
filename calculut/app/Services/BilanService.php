@@ -26,12 +26,6 @@ class BilanService
     {
         $bilan = Bilan::findOrFail($id);
         $bilan->update($request->all());
-
-        $bilan->formulaires()->detach();
-        foreach($bilan->enregistrement->getFormulaires() as $formulaire) {
-            $bilan->formulaires()->attach($formulaire->getId());
-        }
-
         $bilan->evenement->update($request->all());
     }
 
@@ -48,5 +42,13 @@ class BilanService
             "debut" => new DateTime(),
             "fin" => new DateTime(),
         ]);
+    }
+
+    public function deleteBilan(string $bilan)
+    {
+        $bilan = Bilan::findOrFail($bilan);
+        $bilan->formulaires()->detach();
+        $bilan->evenement()->delete();
+        $bilan->delete();
     }
 }

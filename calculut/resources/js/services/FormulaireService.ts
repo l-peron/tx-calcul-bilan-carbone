@@ -46,6 +46,11 @@ export class FormulaireService {
         return Promise.resolve(formulaires.data);
     }
 
+    public async getPublieFormulaires(): Promise<Formulaire[]> {
+        const formulaires = await axios.get(`${this.endpoint}?publie=true`);
+        return Promise.resolve(formulaires.data);
+    }
+
     public async getFormulaire(id): Promise<Formulaire> {
         const formulaire = await axios.get(this.endpoint + '/' + id);
         return Promise.resolve(formulaire.data);
@@ -61,8 +66,8 @@ export class FormulaireService {
         return Promise.resolve();
     }
 
-    public async deleteFormulaire(formulaire: Formulaire): Promise<void> {
-        await axios.delete(`${this.endpoint}/${formulaire.id}`);
+    public async deleteFormulaire(formulaireId): Promise<void> {
+        await axios.delete(`${this.endpoint}/${formulaireId}`);
         return Promise.resolve();
     }
 

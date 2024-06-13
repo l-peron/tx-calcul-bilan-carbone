@@ -47,7 +47,7 @@
         });
     }
 
-    function confirmDeleteFormulaire(formulaire) {
+    function confirmDeleteFormulaire(formulaireId) {
         confirm.require({
             message: 'Es-tu sûr de vouloir supprimer ce formulaire ?',
             header: 'Supprimer le formulaire',
@@ -55,7 +55,7 @@
             rejectLabel: 'Annuler',
             acceptLabel: 'Supprimer',
             accept: async function() {
-                await formulaireService.deleteFormulaire(formulaire);
+                await formulaireService.deleteFormulaire(formulaireId);
                 await getFormulaires();
                 toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le formulaire a été supprimé', life: 3000 });
             },
@@ -69,7 +69,7 @@
         <DataTable :value="formulaires" tableStyle="min-width: 50rem">
             <template #header>
                 <div>
-                    <h1 class="text-xl font-bold my-2">Liste des données</h1>
+                    <h1 class="text-xl font-bold my-2">Liste des formulaires</h1>
                     <div class="flex flex-row items-center justify-between">
                         <Button label="Créer un formulaire" severity="primary" @click="openCreateFormulaire"/>
                         <IconField iconPosition="left">
@@ -95,17 +95,17 @@
                     <span>{{ new Date(data.updated_at).toLocaleDateString() }}</span>
                 </template>
             </Column>
-            <Column header="Actif ?">
+            <Column header="Publié">
                 <template #body="{ data }">
                     <span>{{ data.publie ? 'Oui' : 'Non' }}</span>
                 </template>
             </Column>
             <Column header="Actions">
-                <template #body="slotProps">
-                    <router-link :to="'/admin/' +'formulaires/'+ slotProps.data.id + '/edit'" target="_blank" rel="noopener">
+                <template #body="{ data }">
+                    <router-link :to="'/admin/' +'formulaires/'+ data.id + '/edit'"  rel="noopener">
                         <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2"/>
                     </router-link>
-                    <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteFormulaire(slotProps.data)"/>
+                    <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteFormulaire(data.id)"/>
                 </template>
             </Column>
         </DataTable>
