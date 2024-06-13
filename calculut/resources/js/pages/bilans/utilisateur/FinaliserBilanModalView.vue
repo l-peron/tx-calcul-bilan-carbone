@@ -43,7 +43,7 @@
         <Textarea id="description" v-model="commentaire" rows="3" cols="30" />
     </div>
     <div class="flex justify-content-end gap-2">
-        <Button type="button" label="Annuler" severity="danger" @click="cancel"></Button>
-        <Button type="button" label="Finaliser" severity="success" @click="confirm"></Button>
+        <Button type="button" label="Finaliser" severity="primary" @click="confirm"/>
+        <Button type="button" label="Annuler" severity="danger" outlined @click="cancel"/>
     </div>
 </template>
