@@ -47,7 +47,7 @@
         });
     }
 
-    function confirmDeleteFormulaire(formulaire) {
+    function confirmDeleteFormulaire(formulaireId) {
         confirm.require({
             message: 'Es-tu sûr de vouloir supprimer ce formulaire ?',
             header: 'Supprimer le formulaire',
@@ -55,7 +55,7 @@
             rejectLabel: 'Annuler',
             acceptLabel: 'Supprimer',
             accept: async function() {
-                await formulaireService.deleteFormulaire(formulaire);
+                await formulaireService.deleteFormulaire(formulaireId);
                 await getFormulaires();
                 toast.add({ severity: 'info', summary: 'Confirmation', detail: 'Le formulaire a été supprimé', life: 3000 });
             },
@@ -101,11 +101,11 @@
                 </template>
             </Column>
             <Column header="Actions">
-                <template #body="slotProps">
-                    <router-link :to="'/admin/' +'formulaires/'+ slotProps.data.id + '/edit'"  rel="noopener">
+                <template #body="{ data }">
+                    <router-link :to="'/admin/' +'formulaires/'+ data.id + '/edit'"  rel="noopener">
                         <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2"/>
                     </router-link>
-                    <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteFormulaire(slotProps.data)"/>
+                    <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteFormulaire(data.id)"/>
                 </template>
             </Column>
         </DataTable>

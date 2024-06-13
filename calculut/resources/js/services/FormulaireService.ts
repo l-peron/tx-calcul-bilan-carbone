@@ -66,8 +66,8 @@ export class FormulaireService {
         return Promise.resolve();
     }
 
-    public async deleteFormulaire(formulaire: Formulaire): Promise<void> {
-        await axios.delete(`${this.endpoint}/${formulaire.id}`);
+    public async deleteFormulaire(formulaireId): Promise<void> {
+        await axios.delete(`${this.endpoint}/${formulaireId}`);
         return Promise.resolve();
     }
 

@@ -22,7 +22,7 @@ function ouvrirModalQuestion(question = undefined){
     });
 }
 
-function confirmDeleteDonnee() {
+function confirmDeleteQuestion() {
     confirm.require({
         message: 'Es-tu sûr de vouloir supprimer la question ?',
         header: 'Supprimer la question',
@@ -64,7 +64,7 @@ function confirmDeleteDonnee() {
         <template #footer>
             <div class="flex justify-content-end gap-2">
                 <Button type="button" label="Modifier" severity="warning" outlined @click="ouvrirModalQuestion"/>
-                <Button type="button" label="Supprimer" severity="danger" outlined @click="confirmDeleteDonnee"/>
+                <Button type="button" label="Supprimer" severity="danger" outlined @click="confirmDeleteQuestion"/>
             </div>
         </template>
     </Card>

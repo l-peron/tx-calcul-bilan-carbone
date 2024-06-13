@@ -11,10 +11,7 @@
     import Textarea from "primevue/textarea";
     import Checkbox from "primevue/checkbox";
     import {useDialog} from "primevue/usedialog";
-    const dialog = useDialog();
-
     import {FormulaireService, TypeFormulaire} from "../../services/FormulaireService.ts";
-
     import CardQuestionComponent from "../../components/questions/CardQuestionComponent.vue";
     import {array, boolean, object, string} from "yup";
     import {useForm} from "vee-validate";
@@ -22,9 +19,12 @@
     import Card from "primevue/card";
     import QuestionModalView from "../questions/QuestionModalView.vue";
     import {map} from "lodash";
+    import {useConfirm} from "primevue/useconfirm";
 
+    const dialog = useDialog();
     const toast = useToast();
     const routes = useRoute();
+    const confirm = useConfirm();
 
     const formulaireService = new FormulaireService();
     const formulaireId = routes.params.id;
@@ -112,6 +112,19 @@
             setFieldValue('formule', []);
         });
     }
+
+    function confirmDeleteFormulaire() {
+        confirm.require({
+            message: 'Es-tu sûr de vouloir supprimer le formulaire ?',
+            header: 'Supprimer le formulaire',
+            icon: 'pi pi-exclamation-triangle',
+            rejectLabel: 'Annuler',
+            acceptLabel: 'Supprimer',
+            accept: async function() {
+                await formulaireService.deleteFormulaire(formulaireId);
+            },
+        });
+    }
 </script>
 
 <template>
@@ -123,7 +136,7 @@
                         <h1 class="text-xl font-bold">Modifier un formulaire</h1>
                         <div class="flex flex-row gap-2">
                             <Button type="submit" label="Sauvegarder" severity="primary" :disabled="!meta.valid"/>
-                            <Button label="Supprimer" severity="danger" outlined />
+                            <Button label="Supprimer" severity="danger" outlined @click="confirmDeleteFormulaire"/>
                         </div>
                     </div>
                 </template>
