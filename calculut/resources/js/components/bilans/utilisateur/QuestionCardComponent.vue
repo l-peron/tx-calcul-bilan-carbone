@@ -9,7 +9,7 @@
 <template>
     <div>
         <h3 class="text-base font-semibold my-2">{{ question.intitule }}</h3>
-        <InputText v-model="model" placeholder="Création d'un bilan, ex: SDF P24" id="titreBilan" class="w-96" v-if="question.type  === 'saisie'"/>
+        <InputText v-model="model" placeholder="La valeur à répondre" id="titreBilan" class="w-96" v-if="question.type  === 'saisie'"/>
         <div v-else class="flex flex-row gap-6">
             <div v-for="donnee in question.donnees" :key="donnee.id" class="flex align-items-center">
                 <RadioButton v-model="model" :inputId="donnee.id" name="dynamic" :value="donnee.valeur" />

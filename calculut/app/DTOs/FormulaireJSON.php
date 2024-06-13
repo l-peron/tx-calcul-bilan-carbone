@@ -11,6 +11,7 @@ class FormulaireJSON
     public FormuleJSON $formule;
     public ?float $evaluation;
     public string $secteur;
+    public string $updated_at;
 
     /* @var QuestionJSON[] */
     public array $questions;
@@ -23,6 +24,7 @@ class FormulaireJSON
         $this->publie = $formulaire["publie"];
         $this->evaluation = $formulaire["evaluation"] ?? null;
         $this->secteur = $formulaire["secteur"];
+        $this->updated_at = $formulaire["updated_at"];
 
         $this->formule = new FormuleJSON($formulaire["formule"]);
 

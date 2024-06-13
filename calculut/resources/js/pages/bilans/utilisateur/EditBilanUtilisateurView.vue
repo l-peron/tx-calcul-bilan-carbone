@@ -107,7 +107,12 @@
         delete selectedFormulaires.value[id];
     }
 
-    function saveFormulaire(id, reponses) {
+    async function saveFormulaire(id, reponses, updated) {
+        if(updated) {
+            await formulaireService.getFormulaire(id).then(data => {
+                selectedFormulaires.value[id] = data;
+            });
+        }
         selectedFormulaires.value[id].questions = reponses
     }
 
