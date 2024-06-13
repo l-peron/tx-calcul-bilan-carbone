@@ -39,28 +39,16 @@
         source: ""
     }
 
-    const { handleSubmit, defineField, errors, setValues } = useForm({
+    const { meta, handleSubmit, defineField, errors, setValues } = useForm({
         validationSchema, initialValues
     });
 
-    const [intitule, intituleAttrs] = defineField('intitule', {
-        validateOnModelUpdate: false,
-    });
-    const [description, descriptionAttrs] = defineField('description', {
-        validateOnModelUpdate: false,
-    });
-    const [valeur, valeurAttrs] = defineField('valeur', {
-        validateOnModelUpdate: false,
-    });
-    const [unite, uniteAttrs] = defineField('unite', {
-        validateOnModelUpdate: false,
-    });
-    const [metrique, metriqueAttrs] = defineField('metrique', {
-        validateOnModelUpdate: false,
-    });
-    const [source, sourceAttrs] = defineField('source', {
-        validateOnModelUpdate: false,
-    });
+    const [intitule, intituleAttrs] = defineField('intitule');
+    const [description, descriptionAttrs] = defineField('description');
+    const [valeur, valeurAttrs] = defineField('valeur');
+    const [unite, uniteAttrs] = defineField('unite');
+    const [metrique, metriqueAttrs] = defineField('metrique');
+    const [source, sourceAttrs] = defineField('source');
 
     onMounted(() => {
         if(dialogRef.value.data.donnee.id !== undefined) {
@@ -118,7 +106,7 @@
             <Textarea id="source" v-model="source" v-bind="sourceAttrs" :invalid="errors.source != null" rows="3" cols="30" placeholder="Écrit et référence tes sources ici !"/>
         </div>
         <div class="flex justify-content-end gap-2">
-            <Button type="submit" label="Appliquer" severity="primary"/>
+            <Button type="submit" label="Appliquer" severity="primary" :disabled="!meta.valid"/>
             <Button type="button" label="Annuler" severity="danger" outlined @click="cancel"/>
         </div>
     </form>

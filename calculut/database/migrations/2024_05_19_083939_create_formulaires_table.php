@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('formulaires', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->string('intitule', length: 200)->nullable(false);
             $table->string('description', length: 200)->nullable();
             $table->enum('secteur', ['energie', 'transport', 'fournisseur_logistique', 'dechet', 'alimentation', 'logement', 'amenagement', 'communication'])->nullable(false);
-            $table->jsonb('formule')->nullable(false);
+            $table->jsonb('formule')->nullable();
             $table->boolean('publie')->nullable(false)->default(false);
         });
     }

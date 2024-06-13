@@ -69,7 +69,7 @@
         <DataTable :value="formulaires" tableStyle="min-width: 50rem">
             <template #header>
                 <div>
-                    <h1 class="text-xl font-bold my-2">Liste des données</h1>
+                    <h1 class="text-xl font-bold my-2">Liste des formulaires</h1>
                     <div class="flex flex-row items-center justify-between">
                         <Button label="Créer un formulaire" severity="primary" @click="openCreateFormulaire"/>
                         <IconField iconPosition="left">
@@ -95,14 +95,14 @@
                     <span>{{ new Date(data.updated_at).toLocaleDateString() }}</span>
                 </template>
             </Column>
-            <Column header="Actif ?">
+            <Column header="Publié">
                 <template #body="{ data }">
                     <span>{{ data.publie ? 'Oui' : 'Non' }}</span>
                 </template>
             </Column>
             <Column header="Actions">
                 <template #body="slotProps">
-                    <router-link :to="'/admin/' +'formulaires/'+ slotProps.data.id + '/edit'" target="_blank" rel="noopener">
+                    <router-link :to="'/admin/' +'formulaires/'+ slotProps.data.id + '/edit'"  rel="noopener">
                         <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2"/>
                     </router-link>
                     <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteFormulaire(slotProps.data)"/>

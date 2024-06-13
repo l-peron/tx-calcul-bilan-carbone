@@ -49,4 +49,12 @@ class BilanService
             "fin" => new DateTime(),
         ]);
     }
+
+    public function deleteBilan(string $bilan)
+    {
+        $bilan = Bilan::findOrFail($bilan);
+        $bilan->formulaires()->detach();
+        $bilan->evenement()->delete();
+        $bilan->delete();
+    }
 }

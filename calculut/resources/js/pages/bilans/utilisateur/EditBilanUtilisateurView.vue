@@ -40,7 +40,7 @@
         fin: new Date(),
     }
 
-    const { handleSubmit, defineField, errors, setValues } = useForm({
+    const { meta, handleSubmit, defineField, errors, setValues } = useForm({
         validationSchema, initialValues
     });
 
@@ -62,7 +62,7 @@
     }));
 
     async function recupererFormulaires() {
-        await formulaireService.getFormulaires().then(data => {
+        await formulaireService.getPublieFormulaires().then(data => {
             formulaires.value = data;
         });
     }
@@ -175,7 +175,7 @@
                             <div class="flex flex-row items-center justify-between">
                                 <h1 class="text-xl font-bold my-2">Création d'un Bilan</h1>
                                 <div class="flex flex-row gap-2">
-                                    <Button type="submit" label="Sauvegarder" severity="primary"/>
+                                    <Button type="submit" label="Sauvegarder" severity="primary" :disabled="!meta.valid"/>
                                     <Button label="Finaliser" severity="secondary" @click="confirmFinaliserBilan"/>
                                     <Button label="Supprimer" severity="danger" outlined @click="confirmDeleteBilan" />
                                 </div>
@@ -185,15 +185,15 @@
                             <div class="flex flex-row mt-2 items-center gap-16 m-0">
                                 <div class="flex flex-col">
                                     <label for="titreBilan" class="font-bold block mb-2">Titre du bilan</label>
-                                    <InputText v-model="intitule" placeholder="Création d'un bilan, ex: SDF P24" id="titreBilan" class="w-96" :invalid="errors.intitule != null"/>
+                                    <InputText v-model="intitule" v-bind="intituleAttrs" placeholder="Création d'un bilan, ex: SDF P24" id="titreBilan" class="w-96" :invalid="errors.intitule != null"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label for="dateDebut" class="font-bold block mb-2">Date de début</label>
-                                    <Calendar v-model="debut" showIcon iconDisplay="input" inputId="dateDebut" dateFormat="dd/mm/yy" :invalid="errors.debut != null"/>
+                                    <Calendar v-model="debut" v-bind="debutAttrs" showIcon iconDisplay="input" inputId="dateDebut" dateFormat="dd/mm/yy" :invalid="errors.debut != null"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label for="dateFin" class="font-bold block mb-2">Date de fin</label>
-                                    <Calendar v-model="fin" showIcon iconDisplay="input" inputId="dateFin" dateFormat="dd/mm/yy" :invalid="errors.fin != null"/>
+                                    <Calendar v-model="fin" v-bind="finAttrs" showIcon iconDisplay="input" inputId="dateFin" dateFormat="dd/mm/yy" :invalid="errors.fin != null"/>
                                 </div>
                             </div>
                         </template>

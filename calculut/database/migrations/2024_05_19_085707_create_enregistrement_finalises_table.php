@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('enregistrement_finalises', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->string('auteur', 200)->nullable(false);
             $table->jsonb('enregistrement')->nullable(false);

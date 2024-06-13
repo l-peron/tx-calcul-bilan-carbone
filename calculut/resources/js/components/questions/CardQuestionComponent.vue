@@ -4,12 +4,14 @@ import Button from "primevue/button";
 import QuestionModalView from "../../pages/questions/QuestionModalView.vue";
 import {useDialog} from "primevue/usedialog";
 import {FormulaireService} from "../../services/FormulaireService.ts";
+import {useConfirm} from "primevue/useconfirm";
 
 const props = defineProps(['question']);
 const emit = defineEmits(['removeQuestion']);
 const dialog = useDialog();
 
 const formulaireService = new FormulaireService();
+const confirm = useConfirm()
 
 function ouvrirModalQuestion(question = undefined){
     dialog.open(QuestionModalView, {
@@ -20,10 +22,18 @@ function ouvrirModalQuestion(question = undefined){
     });
 }
 
-function deleteQuestion() {
-    emit('removeQuestion', props.question.id)
+function confirmDeleteDonnee() {
+    confirm.require({
+        message: 'Es-tu sûr de vouloir supprimer la question ?',
+        header: 'Supprimer la question',
+        icon: 'pi pi-exclamation-triangle',
+        rejectLabel: 'Annuler',
+        acceptLabel: 'Supprimer',
+        accept: function() {
+            emit('removeQuestion', props.question.id)
+        },
+    });
 }
-
 </script>
 
 <template>
@@ -54,7 +64,7 @@ function deleteQuestion() {
         <template #footer>
             <div class="flex justify-content-end gap-2">
                 <Button type="button" label="Modifier" severity="warning" outlined @click="ouvrirModalQuestion"/>
-                <Button type="button" label="Supprimer" severity="danger" outlined @click="deleteQuestion"/>
+                <Button type="button" label="Supprimer" severity="danger" outlined @click="confirmDeleteDonnee"/>
             </div>
         </template>
     </Card>

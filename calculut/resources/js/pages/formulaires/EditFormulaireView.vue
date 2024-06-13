@@ -47,7 +47,7 @@
         publie: false,
     }
 
-    const { meta, handleSubmit, defineField, errors, setValues } = useForm({
+    const { meta, handleSubmit, defineField, errors, setValues, setFieldValue } = useForm({
         validationSchema, initialValues
     });
 
@@ -106,10 +106,11 @@
         })
     });
 
-    function deleteQuestion(questionId) {
-        formulaireService.deleteFormulaireQuestion(formulaireId, questionId).then(() => {
+    async function deleteQuestion(questionId) {
+        await formulaireService.deleteFormulaireQuestion(formulaireId, questionId).then(() => {
             getFormulaire();
-        })
+            setFieldValue('formule', []);
+        });
     }
 </script>
 

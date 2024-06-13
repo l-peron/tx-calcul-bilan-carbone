@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('bilans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->string('intitule', length: 200)->nullable(false);
             $table->enum('type', ['event'])->default('event')->nullable(false);

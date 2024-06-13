@@ -28,11 +28,6 @@ class BilanController extends Controller
         }
     }
 
-    public function indexByAsso(string $asso): Collection
-    {
-        return Bilan::with('evenement')->where('asso', $asso)->get();
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -62,8 +57,7 @@ class BilanController extends Controller
      */
     public function destroy(string $id)
     {
-        $bilan = Bilan::findOrFail($id);
-        $bilan->delete();
+        $this->bilanService->deleteBilan($id);
     }
 
     public function duplicate(string $bilan): void
