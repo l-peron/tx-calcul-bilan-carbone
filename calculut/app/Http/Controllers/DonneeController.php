@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donnee;
+use App\Services\DonneeService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class DonneeController extends Controller
 {
+    public function __construct(private DonneeService $donneeService) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -47,5 +50,10 @@ class DonneeController extends Controller
     public function destroy(string $id): void
     {
         Donnee::find($id)->delete();
+    }
+
+    public function duplicate(string $donnee): void
+    {
+        $this->donneeService->duplicateDonnee($donnee);
     }
 }
