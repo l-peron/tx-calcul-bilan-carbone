@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('evenements', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->dateTime('debut')->nullable(false);
             $table->dateTime('fin')->nullable(false);

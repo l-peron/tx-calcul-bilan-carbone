@@ -15,6 +15,8 @@
     const toast = useToast();
     const dialogRef = inject('dialogRef');
 
+    let editMode = false;
+
     const metriques = ref([
         "CO2"
     ]);
@@ -37,38 +39,36 @@
         source: ""
     }
 
-    const { handleSubmit, defineField, errors, setValues } = useForm({
+    const { meta, handleSubmit, defineField, errors, setValues } = useForm({
         validationSchema, initialValues
     });
 
-    const [intitule, intituleAttrs] = defineField('intitule', {
-        validateOnModelUpdate: false,
-    });
-    const [description, descriptionAttrs] = defineField('description', {
-        validateOnModelUpdate: false,
-    });
-    const [valeur, valeurAttrs] = defineField('valeur', {
-        validateOnModelUpdate: false,
-    });
-    const [unite, uniteAttrs] = defineField('unite', {
-        validateOnModelUpdate: false,
-    });
-    const [metrique, metriqueAttrs] = defineField('metrique', {
-        validateOnModelUpdate: false,
-    });
-    const [source, sourceAttrs] = defineField('source', {
-        validateOnModelUpdate: false,
-    });
+    const [intitule, intituleAttrs] = defineField('intitule');
+    const [description, descriptionAttrs] = defineField('description');
+    const [valeur, valeurAttrs] = defineField('valeur');
+    const [unite, uniteAttrs] = defineField('unite');
+    const [metrique, metriqueAttrs] = defineField('metrique');
+    const [source, sourceAttrs] = defineField('source');
 
     onMounted(() => {
-        if(dialogRef.value.data.donnee.id !== undefined)
+        if(dialogRef.value.data.donnee.id !== undefined) {
             setValues(dialogRef.value.data.donnee);
+            editMode = true;
+        }
     });
 
     const onSubmit = handleSubmit(values => {
-        donneeService.createDonnee(values).then(() => {
-            toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'La donnée a bien été créée', life: 5000 });
-        })
+        if(editMode) {
+            donneeService.updateDonnee(values).then(() => {
+                toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'La donnée a bien été modifiée', life: 5000 });
+            });
+
+        } else {
+            donneeService.createDonnee(values).then(() => {
+                toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'La donnée a bien été créée', life: 5000 });
+            });
+        }
+
         dialogRef.value.close();
     });
 
@@ -81,11 +81,11 @@
     <form @submit="onSubmit">
         <div class="flex flex-col gap-3 mb-3">
             <label for="intitule" class="font-semibold w-6rem">Intitulé</label>
-            <InputText id="intitule" v-model="intitule" v-bind="intituleAttrs" :invalid="errors.intitule != null" class="flex-auto" placeholder="Entre le titre de la donnée ici"/>
+            <InputText id="intitule" v-model="intitule" v-bind="intituleAttrs" :invalid="errors.intitule != null" class="flex-auto" placeholder="Titre de la donnée"/>
         </div>
         <div class="flex flex-col gap-3 mb-5">
             <label for="description" class="font-semibold w-6rem">Description</label>
-            <Textarea id="description" v-model="description" v-bind="descriptionAttrs" rows="3" cols="30" placeholder="Entre la description de la donnée ici"/>
+            <Textarea id="description" v-model="description" v-bind="descriptionAttrs" rows="3" cols="30" placeholder="Description de la donnée"/>
         </div>
         <div class="flex flex-row gap-3">
             <div class="flex flex-col gap-3 mb-5">
@@ -103,11 +103,11 @@
         </div>
         <div class="flex flex-col gap-3 mb-5">
             <label for="source" class="font-semibold w-6rem">Source</label>
-            <Textarea id="source" v-model="source" v-bind="sourceAttrs" :invalid="errors.source != null" rows="3" cols="30" placeholder="Écrit et référence tes sources ici !"/>
+            <Textarea id="source" v-model="source" v-bind="sourceAttrs" :invalid="errors.source != null" rows="3" cols="30" placeholder="Référence des sources"/>
         </div>
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Annuler" severity="danger" @click="cancel"></Button>
-            <Button type="submit" label="Créer" severity="success"></Button>
+            <Button type="submit" label="Appliquer" severity="primary" :disabled="!meta.valid"/>
+            <Button type="button" label="Annuler" severity="danger" outlined @click="cancel"/>
         </div>
     </form>
 </template>

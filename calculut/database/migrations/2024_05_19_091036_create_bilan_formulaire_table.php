@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bilan_formulaire', function (Blueprint $table) {
-            $table->id();
-
             $table->foreignUuid('bilan_id');
             $table->foreign('bilan_id')->references('id')->on('bilans');
 
             $table->foreignUuid('formulaire_id');
             $table->foreign('formulaire_id')->references('id')->on('formulaires');
+
+            $table->primary(['bilan_id', 'formulaire_id']);
         });
     }
 

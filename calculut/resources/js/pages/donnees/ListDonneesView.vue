@@ -36,10 +36,8 @@
     });
     function ouvrirModalDonnee(donnee = undefined) {
         dialog.open(CreateDonneeModalView, {
-            props: { header: 'Ajouter ou modifier une donnée', modal: true},
-            data: {
-                donnee: donnee
-            },
+            props: { header: `${donnee === undefined ? 'Modifier': 'Ajouter'} une donnée`, modal: true},
+            data: { donnee },
             onClose: () => {
                 recupererDonnees();
             }
@@ -72,7 +70,7 @@
                         <Button label="Créer une donnée" severity="primary" @click="ouvrirModalDonnee"/>
                         <IconField iconPosition="left">
                             <InputIcon class="pi pi-search"> </InputIcon>
-                            <InputText v-model="filters['global'].value" placeholder="Rechercher une donnée..." id="search_donnee"/>
+                            <InputText v-model="filters['global'].value" placeholder="Rechercher une donnée..." id="search_donnee" class="w-80"/>
                         </IconField>
                     </div>
                 </div>
@@ -93,8 +91,8 @@
             </Column>
             <Column  style="min-width:8rem">
                 <template #body="slotProps">
-                    <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="ouvrirModalDonnee(slotProps.data)" />
-                    <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteDonnee(slotProps.data)" />
+                    <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2" @click="ouvrirModalDonnee(slotProps.data)" />
+                    <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteDonnee(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>

@@ -14,7 +14,7 @@
             <span
                 class="my-1 font-semibold"
                 v-if="question.type === 'unique'"
-                :set="donnee = question.donnees.find(d => d.valeur)"
+                :set="donnee = question.donnees.find(d => d.valeur === question.reponse)"
             >
                 {{ donnee.intitule + ' (' + donnee.valeur + ' ' + donnee.unite + ')' }}
             </span>

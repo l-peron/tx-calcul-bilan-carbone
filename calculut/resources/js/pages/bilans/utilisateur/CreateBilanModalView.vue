@@ -31,27 +31,20 @@
         fin: new Date(),
     }
 
-    const { handleSubmit, defineField, errors } = useForm({
+    const { meta, handleSubmit, defineField, errors } = useForm({
         validationSchema, initialValues
     });
 
-    const [intitule, intituleAttrs] = defineField('intitule', {
-        validateOnModelUpdate: false,
-    });
-    const [debut, debutAttrs] = defineField('debut', {
-        validateOnModelUpdate: false,
-    });
-    const [fin, finAttrs] = defineField('fin', {
-        validateOnModelUpdate: false,
-    });
+    const [intitule, intituleAttrs] = defineField('intitule');
+    const [debut, debutAttrs] = defineField('debut');
+    const [fin, finAttrs] = defineField('fin');
 
     const onSubmit = handleSubmit(values => {
-        console.log()
         bilanService.createBilan(values, asso).then(bilan => {
             toast.add({ severity: 'success', summary: 'Création effectuée !', detail: 'Le bilan a bien été créée', life: 5000 });
             router.push(`/assos/${bilan.asso}/bilans/${bilan.id}/edit`);
         });
-
+        dialogRef.value.close();
     });
 
     function cancel() {
@@ -70,12 +63,12 @@
             <Calendar v-model="debut" v-bind="debutAttrs" showIcon iconDisplay="input" inputId="dateDebut" dateFormat="dd/mm/yy" :invalid="errors.debut != null"/>
         </div>
         <div class="flex flex-col gap-3 mb-3">
-            <label for="dateDebut" class="font-bold block mb-2">Date de début</label>
-            <Calendar v-model="fin" v-bind="finAttrs" showIcon iconDisplay="input" inputId="dateDebut" dateFormat="dd/mm/yy" :invalid="errors.fin != null"/>
+            <label for="dateFin" class="font-bold block mb-2">Date de fin</label>
+            <Calendar v-model="fin" v-bind="finAttrs" showIcon iconDisplay="input" inputId="dateFin" dateFormat="dd/mm/yy" :invalid="errors.fin != null"/>
         </div>
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Annuler" severity="danger" @click="cancel"></Button>
-            <Button type="submit" label="Créer" severity="success"></Button>
+            <Button type="submit" label="Créer" severity="primary" :disabled="!meta.valid"/>
+            <Button type="button" label="Annuler" severity="danger" outlined @click="cancel"/>
         </div>
     </form>
 </template>

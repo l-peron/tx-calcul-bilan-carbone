@@ -8,7 +8,7 @@ class QuestionJSON
 {
     public string $id;
     public string $intitule;
-    public string $description;
+    public ?string $description;
     public string $variable;
     public string $type;
     public array $donnees;

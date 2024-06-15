@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ListDonneesView from "./pages/donnees/ListDonneesView.vue";
-import CreateBilanUtilisateurView from "./pages/bilans/utilisateur/EditBilanUtilisateurView.vue";
+import EditBilanUtilisateurView from "./pages/bilans/utilisateur/EditBilanUtilisateurView.vue";
 import ListBilansUtilisateurView from "./pages/bilans/utilisateur/ListBilansUtilisateurView.vue";
 import ListBilansAdminView from "./pages/bilans/admin/ListBilansAdminView.vue";
 import AccueilUtilisateurView from "./pages/accueil/AccueilUtilisateurView.vue";
 import RecapitulatifBilanView from "./pages/recapitulatif/RecapitulatifBilanView.vue";
+import ListFormulairesView from "./pages/formulaires/ListFormulairesView.vue";
+import EditFormulaireView from "./pages/formulaires/EditFormulaireView.vue";
 
 const routes = [
     {
@@ -17,7 +19,7 @@ const routes = [
     },
     {
         path: "/assos/:asso/bilans/:id/edit",
-        component: CreateBilanUtilisateurView
+        component: EditBilanUtilisateurView
     },
     {
         path: "/assos/:asso/bilans/:id/finalises",
@@ -38,6 +40,14 @@ const routes = [
     {
         path: "/:pathMatch(.*)*",
         component: AccueilUtilisateurView,
+    },
+    {
+        path: "/admin/formulaires",
+        component: ListFormulairesView
+    },
+    {
+        path: "/admin/formulaires/:id/edit",
+        component: EditFormulaireView
     }
 ];
 
