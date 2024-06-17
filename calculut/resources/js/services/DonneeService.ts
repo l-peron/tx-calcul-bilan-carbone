@@ -31,6 +31,11 @@ export class DonneeService {
         return Promise.resolve(is_updated.data);
     }
 
+    public async duplicateDonnee(donnee: Donnee): Promise<void> {
+        await axios.post(`${this.endpoint}/${donnee.id}/duplicate`)
+        return Promise.resolve();
+    }
+
     public async deleteDonnee(donnee: Donnee): Promise<void> {
         await axios.delete(`${this.endpoint}/${donnee.id}`);
         return Promise.resolve();

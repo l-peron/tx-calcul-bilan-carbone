@@ -13,6 +13,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('assos', [IdentityController::class, 'getMe']);
 
     // Données
+    Route::post('donnees/{donnee}/duplicate', [DonneeController::class, 'duplicate']);
     Route::apiResource('donnees', DonneeController::class);
 
     // Formulaires
