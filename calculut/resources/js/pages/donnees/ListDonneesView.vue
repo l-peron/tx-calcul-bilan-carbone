@@ -44,6 +44,21 @@
         });
     }
 
+    function confirmDuplicateDonnee(donneeId) {
+        confirm.require({
+            message: 'Es-tu sûr de vouloir duppliquer la donnée ?',
+            header: 'Dupliquer la donnée',
+            icon: 'pi pi-exclamation-triangle',
+            rejectLabel: 'Annuler',
+            acceptLabel: 'Dupliquer',
+            accept: async function() {
+                await donneeService.duplicateDonnee(donneeId);
+                await recupererDonnees();
+                toast.add({ severity: 'info', summary: 'Confirmation', detail: 'La donnée a bien été dupliquée', life: 3000 });
+            },
+        });
+    }
+
     function confirmDeleteDonnee(donnee = undefined) {
         confirm.require({
             message: 'Es-tu sûr de vouloir supprimer la donnée ? (Pense aux questions associées !)',
@@ -92,6 +107,7 @@
             <Column  style="min-width:8rem">
                 <template #body="slotProps">
                     <Button label="Éditer" icon="pi pi-pencil" outlined class="mr-2" @click="ouvrirModalDonnee(slotProps.data)" />
+                    <Button label="Dupliquer" icon="pi pi-clone" outlined severity="contrast" class="mr-2" @click="confirmDuplicateDonnee(slotProps.data)"/>
                     <Button label="Supprimer" icon="pi pi-trash" outlined severity="danger" @click="confirmDeleteDonnee(slotProps.data)" />
                 </template>
             </Column>
