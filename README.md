@@ -64,3 +64,49 @@ _Exemple: Un formulaire a été créé pour estimer l'émission carbonne lié au
 - _"Combien de KMs a été réalisé ? Saisie numérique de l'utilisateur"_
 
 _La formule étant "typeTransport * nbKm * nbpersonnes", il est possède de calculer l'émission lié au transport des participants._
+
+## Architecture Projet et BDDs
+
+### Structure du Projet
+
+Nous allons expliquer la structure d'un projet Laravel et comment nous avons intégré Vue.js comme framework front-end.
+
+#### Structure de Base d'un Projet Laravel
+
+Un projet Laravel est organisé de manière à séparer les différentes responsabilités de l'application. Voici les principaux répertoires et fichiers :
+
+- **app/** : Contient le code principal de l'application, y compris les modèles, les contrôleurs et les services.
+  - **Http/Controllers/** : Contient les contrôleurs de l'application, qui gèrent les requêtes HTTP et renvoient des réponses.
+  - **Models/** : Contient les modèles Eloquent, qui représentent les tables de la base de données.
+  - **Services/** : Contient les services, qui configurent et initialisent les services de l'application.
+
+- **config/** : Contient les fichiers de configuration de l'application.
+  - **app.php** : Fichier de configuration principal de l'application.
+  - **database.php** : Configuration de la base de données.
+
+- **database/** : Contient les migrations, les seeders et les factories pour la base de données.
+  - **migrations/** : Contient les fichiers de migration qui définissent la structure des tables de la base de données.
+  - **seeders/** : Contient les classes qui permettent de peupler la base de données avec des données de test.
+
+- **routes/** : Contient les définitions de routes de l'application.
+  - **web.php** : Contient les routes web (accédées via un navigateur).
+  - **api.php** : Contient les routes API (accédées via des appels API).
+
+- **tests/** : Contient les tests unitaires et fonctionnels.
+  - **Feature/** : Contient les tests fonctionnels.
+  - **Unit/** : Contient les tests unitaires.
+
+Pour plus d'informations, la documentation de Laravel est très exhaustive et a été de nombreuses fois utilisées lors de la réalisation de ce projet: [Laravel Documentation](https://laravel.com/docs/11.x)
+
+#### Intégration de Vue.js dans Laravel
+
+Pour le front-end, nous avons utilisé Vue.js, un framework JavaScript moderne qui facilite la création d'interfaces utilisateur dynamiques. Nous avons intégré Vue.js dans la partie `resources` de Laravel, sous le répertoire `resources/js`.
+
+### Architecture BDD
+
+![](/resources/bilan_formulaire.png)
+
+![](/resources/UML%20v2.drawio.png)
+
+
+## Installation du projet
