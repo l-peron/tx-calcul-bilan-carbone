@@ -1,12 +1,36 @@
 # Calcul'UT
 
+## Table des matières
+
+- [Contexte](#contexte)
+- [L'application](#lapplication)
+  - [Partie Administrateur](#partie-administrateur)
+  - [Partie Association/Utilisateur](#partie-associationutilisateur)
+- [Définitions des concepts de l'application](#définitions-des-concepts-de-lapplication)
+
+  - [Événement](#événement)
+  - [Bilan](#bilan)
+  - [Formulaire](#formulaire)
+  - [Question](#question)
+  - [Réponse](#réponse)
+  - [Donnée](#donnée)
+  - [Formule](#formule)
+
+- [Architecture Projet et BDDs](#architecture-projet-et-bdds)
+  - [Structure du projet](#structure-du-projet)
+  - [Architecture BDD](#architecture-bdd)
+- [Installation du projet](#installation-du-projet)
+  - [Prérequis](#prérequis)
+  - [Environnement de développement](#environnement-de-développement)
+  - [Environnement de production](#environnement-de-production)
+
 ## Contexte
 
 Le BDE-UTC, fédération des associations UTCéennes a émis une demande quant à la réalisation d'un outil permettant d'estimer le bilan carbonne des activités de ses associations.
 
 Un sujet de TX a été créé afin de développer la solution demandée par le BDE lors du semestre P24.
 
-Lors du semestre P24, une étude du besoin, de conception et un MVP ont été réalisés. Calcul'UT reste pour le moment un outil expérimental et nous encourageons le BDE à poursuivre la TX afin de le rendre plus consistant et déployable. Cependant, l'outil peut être tester pour différentes utilisations afin d'avoir des premiers feed-backs dans le but d'instaurer une logique d'amélioration continue.
+Lors du semestre P24, une [étude du besoin](/documentation/besoin.md), une [conception](/documentation/conception.md) et un MVP ont été réalisés. Calcul'UT reste pour le moment un outil expérimental et nous encourageons le BDE à poursuivre la TX afin de le rendre plus consistant et déployable. Cependant, l'outil peut être tester pour différentes utilisations afin d'avoir des premiers feed-backs dans le but d'instaurer une logique d'amélioration continue.
 
 ## L'application
 
@@ -76,19 +100,23 @@ Nous allons expliquer la structure d'un projet Laravel et comment nous avons int
 Un projet Laravel est organisé de manière à séparer les différentes responsabilités de l'application. Voici les principaux répertoires et fichiers :
 
 - **app/** : Contient le code principal de l'application, y compris les modèles, les contrôleurs et les services.
+
   - **Http/Controllers/** : Contient les contrôleurs de l'application, qui gèrent les requêtes HTTP et renvoient des réponses.
   - **Models/** : Contient les modèles Eloquent, qui représentent les tables de la base de données.
   - **Services/** : Contient les services, qui configurent et initialisent les services de l'application.
 
 - **config/** : Contient les fichiers de configuration de l'application.
+
   - **app.php** : Fichier de configuration principal de l'application.
   - **database.php** : Configuration de la base de données.
 
 - **database/** : Contient les migrations, les seeders et les factories pour la base de données.
+
   - **migrations/** : Contient les fichiers de migration qui définissent la structure des tables de la base de données.
   - **seeders/** : Contient les classes qui permettent de peupler la base de données avec des données de test.
 
 - **routes/** : Contient les définitions de routes de l'application.
+
   - **web.php** : Contient les routes web (accédées via un navigateur).
   - **api.php** : Contient les routes API (accédées via des appels API).
 
@@ -108,5 +136,40 @@ Pour le front-end, nous avons utilisé Vue.js, un framework JavaScript moderne q
 
 ![](/resources/UML%20v2.drawio.png)
 
-
 ## Installation du projet
+
+### Prérequis
+
+- php :
+- node.js :
+
+### Environnement de développement
+
+#### Configurer le docker-compose pour la BDD
+
+#### Démarrer l'API
+
+```
+php artisan migrate
+php artisan serve
+```
+
+#### Démarrer les tests Laravel
+
+```
+php artisan test --testsuite=Unit
+```
+
+#### Installer les dépendances front-end
+
+```
+npm install
+```
+
+#### Démarrer l'application VueJS
+
+```
+npm run dev
+```
+
+### Environnement de production
