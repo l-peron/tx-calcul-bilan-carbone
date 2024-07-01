@@ -34,6 +34,9 @@ class QuestionService
             }
         }
 
+        // Pour que le updated_at soit mis à jour, comme ça on sait si le formulaire est à jour dans les bilans
+        $fetchQuestion->formulaire->save();
+
         return $fetchQuestion;
     }
 }
