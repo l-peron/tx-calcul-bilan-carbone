@@ -1,6 +1,49 @@
 # Étude du besoin
 
-Ces documents ([note de clarification](#note-de-clarification) et [diagramme FAST](#diagramme-fast)) n'ont pas été finalisés mais sont une trace importante du travail effectué.
+Ces documents ([QiSii](#qisii), [diagramme FAST](#diagramme-fast) et [note de clarification](#note-de-clarification)) n'ont pas été finalisés mais sont une trace importante du travail effectué pour l'étude du besoin.
+
+Vous trouverez notamment le périmètre final de la TX et les fonctionnalités devant être développées ce semestre dans la [note de clarification](#note-de-clarification).
+
+## QiSii
+
+### Verbatim
+
+Le BDE souhaite accompagner les associations de l'UTC dans une démarche responsable, dans l'adoption de la charte RSE et les pousser à s'engager plus activement sur les transformations qu'elles peuvent prendre pour améliorer leurs impacts environnementaux et sociaux. Il s'agit de permettre à ces associations de réaliser elles-mêmes et facilement les calculs d'impacts de leurs activités.
+
+Deux axes (donc potentiellement deux essences en diagramme FAST) se dégagent de ce verbatim :
+
+- accompagner
+- réaliser des calculs d'impacts
+
+### Question initiale posée
+
+Comment permettre aux associations de l'UTC de calculer les impacts de leurs activités simplement et d'être accompagnées dans leurs transformations ?
+
+### Solution initiale
+
+- création d'un outil plus simple qu'un excel de calcul d'impact (carbone par exemple) permettant des recommandations simples, économiques, efficaces et priorisées à mettre en œuvre
+- l'utilisateur doit être guidé et orientées par thématiques (Transports, Alimentation, Logistique, Activités)
+- s'appuyant sur des données scientifiques (crédibilité, source)
+- accessible aux associations de l'UTC pour réaliser des calculs
+- accès administrateur BDE pour accompagner les associations / création d'un lien entre pôle RSE BDE et toutes les associations ou rediriger les associations vers le BDE pour se faire accompagner
+
+### Questions pour la reformulation
+
+- le format du parcours guidé est-il ferme ?
+- les 4 grandes thématiques (transports, alimentation, logistique, activités) sont-elles fermes, vouées à évoluer ou à soumettre à un benchmark ?
+
+### Remise en cause
+
+- carte blanche pour le format, l'essentiel est la simplicité de l'outil
+- les thématiques peuvent être amenées à évolution à la suite d'un inventaire des postes d'émissions.
+
+### Conclusion
+
+Le sujet de la TX est déjà plutôt très clair dans sa formulation initiale. Nous pouvons le préciser avec une note de clarification.
+
+## Diagramme FAST
+
+![](/resources/FASTdiagram.jpg)
 
 ## Note de clarification
 
@@ -137,12 +180,10 @@ L’objectif est de pouvoir soumettre un pdf à des labellisateurs donc le BDE n
 
 #### Rétroplanning
 
-- Définition du besoin :
-- Validation diagramme FAST :
-- Test utilisateurs :
-- Maquette validée :
-- Début du développement :
-- Premiers tests utilisateur :
+- Définition du besoin
+- Conception Maquette
+- Conception BDD
+- Développement
 
 ### Acteurs
 
@@ -171,7 +212,3 @@ L’objectif est de pouvoir soumettre un pdf à des labellisateurs donc le BDE n
 ### Budget
 
 Non concerné.
-
-## Diagramme FAST
-
-![](/resources/FASTdiagram.jpg)
