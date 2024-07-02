@@ -8,4 +8,8 @@ Elle est disponible ici : https://www.figma.com/proto/8F2NBWDmSAHcgZHb3o6VX5/dia
 
 ## Base de données
 
+À la conception :
 ![](/resources/UML%20v2.drawio.png)
+
+BDD développée :
+![](/resources/bilan_formulaire.png)
